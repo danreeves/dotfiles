@@ -1,0 +1,25 @@
+[user]
+	name = Dan Reeves
+	email = hey@danreev.es
+
+[core]
+	excludesfile = /Users/danreeves/.gitignore_global
+	pager = diff-so-fancy | less --tabs=4 -RFX
+
+[tag]
+	sort = version:refname
+
+[rebase]
+	autosquash = true
+
+[push]
+	followTags = true
+
+[help]
+	autocorrect = 1
+
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f

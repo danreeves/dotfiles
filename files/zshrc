@@ -1,0 +1,119 @@
+# Colours please
+export TERM=xterm-256color
+
+### iTerm2 Titleback One Dark theme
+# echo -e "\033]6;1;bg;red;brightness;40\a"
+# echo -e "\033]6;1;bg;green;brightness;44\a"
+# echo -e "\033]6;1;bg;blue;brightness;52\a"
+# clear
+
+### Homebrew path 🍺
+export PATH="/usr/local/sbin:$PATH"
+### Rust path 🦀
+export PATH="$HOME/.cargo/bin:$PATH"
+
+### history file config
+HISTFILE=~/.zsh_history
+HISTSIZE=999999999
+SAVEHIST=$HISTSIZE
+setopt APPEND_HISTORY
+
+### better tab completion
+autoload -U compinit
+compinit
+# case insensitive
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+### zsh syntax highlighting
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+### zsh autosuggestions
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+### up or down history based on what's typed in already
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+
+### some aliases
+alias cl='clear'
+alias ls='ls -GFh'
+alias diff='git diff --no-index'
+
+### jump to recently used items
+eval "$(fasd --init zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+function fasd_cd() {
+  if [ $# -le 1 ]; then
+    fasd "$@"
+  else
+    local _fasd_ret="$(fasd -e 'printf %s' "$@")"
+    [ -z "$_fasd_ret" ] && return
+    [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
+  fi
+}
+alias z='fasd_cd -d' # cd, same functionality as j in autojump
+
+### Sublime
+export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
+
+alias vim="nvim"
+alias vi="nvim"
+export EDITOR="nvim"
+export REACT_EDITOR="nvim"
+
+# v [path]
+# Opens the passed path or the current dir in vi
+function v () {
+    # if there's no argument
+    if [ $# -eq 0 ]; then
+        vi ./
+        return
+    fi
+    vi $@
+}
+
+# zv [name]
+# Uses fasd to search for a likely folder and opens it with vi
+function zv () {
+    v $(fasd -e 'printf %s' "$@");
+}
+
+### git
+alias gaa='git add -A'
+alias gs='git status'
+alias gcm='git commit -m'
+alias gca='git commit --amend --no-edit'
+alias gce='git commit --amend'
+alias gco='git checkout'
+alias gd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines'
+alias glg="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
+alias gpp='git pull --rebase && git push'
+
+### nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# added by travis gem
+[ -f /Users/danreeves/.travis/travis.sh ] && source /Users/danreeves/.travis/travis.sh
+
+# fzf fuzzy completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git'
+
+# Local config
+for file in ~/.config/local/*; do
+  source "$file"
+done
+
+### LAST
+### pure prompt
+autoload -U promptinit && promptinit
+prompt pure
