@@ -29,7 +29,7 @@ window:
 
   # Window decorations
   # Setting this to false will result in window without borders and title bar.
-  decorations: true
+  decorations: "full"
 
 # Display tabs using this many cells (changes require restart)
 tabspaces: 8
@@ -41,20 +41,22 @@ draw_bold_text_with_bright_colors: true
 font:
   # The normal (roman) font face to use.
   normal:
-    family: Source Code Pro
+    family: Hack
     # Style can be specified to pick a specific face.
-    # style: Regular
+    style: Regular
 
   # The bold font face
   bold:
-    family: Source Code Pro
+    family: Hack
     # Style can be specified to pick a specific face.
+    style: Regular
     # style: Bold
 
   # The italic font face
   italic:
-    family: Source Code Pro
+    family: Hack 
     # Style can be specified to pick a specific face.
+    style: Regular
     # style: Italic
 
   # Point size of the font
@@ -73,10 +75,6 @@ font:
     x: 0
     y: 0
 
-  # Scale the font size based on the monitor's DPI. This will lead to bigger text on HiDPI
-  # screens and make reading text a little easier.
-  scale_with_dpi: true
-
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
@@ -84,10 +82,6 @@ font:
 
 # Should display the render timer
 render_timer: false
-
-# Use custom cursor colors. If true, display the cursor in the cursor.foreground
-# and cursor.background colors, otherwise invert the colors of the cursor.
-custom_cursor_colors: false
 
 # Colors (One Dark)
 colors:
@@ -168,6 +162,7 @@ mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
 
 mouse:
+  hide_when_typing: true
   # Click settings
   #
   # The `double_click` and `triple_click` settings control the time
@@ -178,20 +173,18 @@ mouse:
 
   # Faux Scrollback
   #
-  # The `faux_scrollback_lines` setting controls the number
+  # The `faux_scrolling_lines` setting controls the number
   # of lines the terminal should scroll when the alternate
   # screen buffer is active. This is used to allow mouse
   # scrolling for applications like `man`.
   #
-  # To disable this completely, set `faux_scrollback_lines` to 0.
-  faux_scrollback_lines: 1
+  # To disable this completely, set `faux_scrolling_lines` to 0.
+  faux_scrolling_lines: 1
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 
 dynamic_title: true
-
-hide_cursor_when_typing: false
 
 # Style of the cursor
 #
@@ -199,7 +192,7 @@ hide_cursor_when_typing: false
 # - Block
 # - Underline
 # - Beam
-cursor_style: Beam
+cursor.style: Beam
 
 # Live config reload (changes require restart)
 live_config_reload: true

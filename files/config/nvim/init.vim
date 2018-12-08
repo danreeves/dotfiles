@@ -26,8 +26,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 " GitHub enhancement to fugitive
 Plug 'tpope/vim-rhubarb'
-" fzf fuzzy finder installed with homebrew
-Plug '/usr/local/opt/fzf'
+" fzf fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " fzf vim plugin
 Plug 'junegunn/fzf.vim'
 " No distractions mode

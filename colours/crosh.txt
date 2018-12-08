@@ -1,0 +1,26 @@
+background-color = #282c34
+foreground-color = #abb2bf
+cursor-color = #abb2bf
+
+color-palette-overrides = [
+  "#282c34",
+  "#e06c75",
+  "#98c379",
+  "#d19a66",
+  "#61afef",
+  "#c678dd",
+  "#56b6c2",
+  "#abb2bf",
+  "#5c6370",
+  "#e06c75",
+  "#98c379",
+  "#d19a66",
+  "#61afef",
+  "#c678dd",
+  "#56b6c2",
+  "#ffffff"
+]
+
+font-family = "Hack", "Source Code Pro", "DejaVu Sans Mono", "Noto Sans Mono", "Everson Mono", FreeMono, Menlo, Terminal, monospace
+
+user-css = https://cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css
