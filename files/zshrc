@@ -1,5 +1,6 @@
-### pure prompt
-autoload -U promptinit && promptinit
+# Set up the prompt
+fpath=( "$HOME/.zfunctions" $fpath )
+autoload -U promptinit; promptinit
 prompt pure
 
 # Colours please
@@ -28,10 +29,8 @@ compinit
 # case insensitive
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
-### zsh syntax highlighting
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ### zsh autosuggestions
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ### up or down history based on what's typed in already
 autoload -U up-line-or-beginning-search
@@ -127,3 +126,5 @@ for file in ~/.config/local/*; do
   source "$file"
 done
 
+### zsh syntax highlighting - Must be last
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
