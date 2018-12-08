@@ -13,6 +13,11 @@ sudo apt-get install \
         python3 \
         fonts-hack-ttf
 
+echo "Installing git-town"
+curl --silent -L "https://github.com/Originate/git-town/releases/download/$(get_latest_release Originate/git-town)/git-town-amd64.deb" -o git-town.deb
+sudo dpkg -i git-town.deb
+rm git-town.deb
+
 echo "Installing zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
