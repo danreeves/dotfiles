@@ -184,7 +184,7 @@ let g:ale_fix_on_save = 1
 
 " LanguageServer config
 let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+      \ 'rust': ['rls'],
       \ }
 
 " NERDTree
@@ -194,7 +194,7 @@ let g:NERDTreeShowHidden = 1
 
 " NERDCommenter
 " <leader>c<space> is NERDComToggleComment
-map <C-\> <leader>c<space>
+map <C-_> <leader>c<space>
 let g:NERDSpaceDelims = 1
 
 " fzf keybinds
