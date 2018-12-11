@@ -54,7 +54,7 @@ font:
 
   # The italic font face
   italic:
-    family: Hack 
+    family: Hack
     # Style can be specified to pick a specific face.
     style: Regular
     # style: Italic
@@ -243,8 +243,13 @@ shell:
 #     strings. For example:
 #     - { ... , command: { program: "alacritty", args: ["-e", "vttest"] } }
 key_bindings:
+  # Fixes Alt+3 for # on MacOS
+  - { key: Key3,     mods: Alt,     chars: "#"                           }
+  # Dupe Copy & Paste to support both MacOS and ChromeOS styles
   - { key: V,        mods: Command, action: Paste                        }
+  - { key: V,        mods: Control|Shift, action: Paste                  }
   - { key: C,        mods: Command, action: Copy                         }
+  - { key: C,        mods: Control|Shift, action: Copy                   }
   - { key: Q,        mods: Command, action: Quit                         }
   - { key: W,        mods: Command, action: Quit                         }
   - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
