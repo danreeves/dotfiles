@@ -6,6 +6,11 @@ prompt pure
 # Colours please
 export TERM=xterm-256color
 
+# set key repeat for debian
+if (( $+xset )) ; then
+  xset r rate 180 40
+fi
+
 ### iTerm2 Titleback One Dark theme
 # echo -e "\033]6;1;bg;red;brightness;40\a"
 # echo -e "\033]6;1;bg;green;brightness;44\a"
@@ -95,15 +100,19 @@ alias glg="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d
 alias gpp='git pull --rebase && git push'
 
 ### nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+if [ -d ~/.nvm ]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -f "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+fi
 
-# rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+### rbenv
+if [ -d ~/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
 
 # added by travis gem
-[ -f /Users/danreeves/.travis/travis.sh ] && source /Users/danreeves/.travis/travis.sh
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
 # fzf fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -122,7 +131,7 @@ alias ping='prettyping --no-legend'
 alias du='ncdu --color dark -rr -x --exclude .git --exclude node_modules'
 
 # Local config
-for file in ~/.config/local/*; do
+for file in ~/.config/localconfig/*(N); do
   source "$file"
 done
 
