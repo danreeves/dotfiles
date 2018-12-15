@@ -1,0 +1,40 @@
+{
+    "magic":"nassh-prefs",
+    "version":1,
+    "nassh":{
+        "profile-ids":[
+
+        ]
+    },
+    "hterm":{
+        "default":{
+            "audible-bell-sound":"",
+            "background-color":"rgba(40, 44, 52, 1)"            │,
+            "cursor-blink":true,
+            "cursor-color":"rgba(171, 178, 191, 0.5)",
+            "color-palette-overrides":[
+                "#282c34",
+                "#e06c75",
+                "#98c379",
+                "#d19a66",
+                "#61afef",
+                "#c678dd",
+                "#56b6c2",
+                "#abb2bf",
+                "#5c6370",
+                "#e06c75",
+                "#98c379",
+                "#d19a66",
+                "#61afef",
+                "#c678dd",
+                "#56b6c2",
+                "#ffffff"
+            ],
+            "enable-blink":false,
+            "font-family":"\"DejaVu Sans Mono\"",
+            "font-size":"16",
+            "foreground-color":"rgba(171, 178, 191, 1)",
+            "scroll-wheel-may-send-arrow-keys":true
+        }
+    }
+}
