@@ -8,6 +8,7 @@ get_latest_release() {
 
 echo "Installing from apt"
 sudo apt-get install \
+        wget \
 	zsh-syntax-highlighting \
         python \
         python3 \
@@ -57,3 +58,9 @@ rustup component add rls-preview rust-analysis rust-src
 
 echo "Installing bat"
 cargo install bat
+
+echo "Installing terraform"
+wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
+unzip terraform_0.11.10_linux_amd64.zip
+sudo install terraform /usr/bin
+rm terraform terraform_0.11.10_linux_amd64.zip
