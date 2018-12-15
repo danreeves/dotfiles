@@ -56,11 +56,14 @@ rm -rf /tmp/fasd
 echo "Installing rls"
 rustup component add rls-preview rust-analysis rust-src
 
-echo "Installing bat"
-cargo install bat
-
 echo "Installing terraform"
 wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
 unzip terraform_0.11.10_linux_amd64.zip
 sudo install terraform /usr/bin
 rm terraform terraform_0.11.10_linux_amd64.zip
+
+echo "Installing go"
+wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
+tar -xvf go1.11.4.linux-amd64.tar.gz
+sudo mv ./go /opt/go
+rm go1.11.4.linux-amd64.tar.gz
