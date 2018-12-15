@@ -127,7 +127,7 @@ export FZF_DEFAULT_COMMAND='rg --files  --hidden --follow --glob "!.git/*"'
 
 alias top='htop'
 alias cat='bat'
-alias ping='prettyping --no-legend'
+# alias ping='prettyping --no-legend'
 alias du='ncdu --color dark -rr -x --exclude .git --exclude node_modules'
 
 # Local config

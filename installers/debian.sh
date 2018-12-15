@@ -14,7 +14,7 @@ sudo apt-get install \
         python3 \
         python-pip \
         python3-pip \
-        fonts-hack-ttf
+        iputils-ping
 
 echo "Installing git-town"
 curl --silent -L "https://github.com/Originate/git-town/releases/download/$(get_latest_release Originate/git-town)/git-town-amd64.deb" -o git-town.deb
