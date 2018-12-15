@@ -11,6 +11,8 @@ sudo apt-get install \
 	zsh-syntax-highlighting \
         python \
         python3 \
+        python-pip \
+        python3-pip \
         fonts-hack-ttf
 
 echo "Installing git-town"
@@ -31,6 +33,10 @@ curl --silent -L \
 	&& sudo mv ./squashfs-root /opt/nvim \
 	&& sudo ln -s /opt/nvim/usr/bin/nvim /usr/bin/nvim || true \
 	&& rm ./nvim.appimage
+
+echo "Installing python for neovim"
+pip2 install --user neovim
+pip3 install --user neovim
 
 echo "Installing vim-plug"
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
