@@ -174,6 +174,9 @@ let g:ale_fixers = {
       \   ],
       \   'rust': [
       \       'rustfmt',
+      \   ],
+      \   'go': [
+      \       'gofmt',
       \   ]
       \}
 

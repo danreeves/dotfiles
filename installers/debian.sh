@@ -67,3 +67,12 @@ wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
 tar -xvf go1.11.4.linux-amd64.tar.gz
 sudo mv ./go /opt/go
 rm go1.11.4.linux-amd64.tar.gz
+
+echo "Installing nvm"
+mkdir ~/.nvm
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+source ~/.nvm/nvm.sh
+
+echo "Installing node"
+nvm install node
+node --version
