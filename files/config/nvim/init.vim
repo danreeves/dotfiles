@@ -204,11 +204,22 @@ let g:NERDSpaceDelims = 1
 " Fuzzy search for filenames with Ctrl+p
 noremap <C-p> :Files<CR>
 " Search for text in files with Ctrl+f
-noremap <C-f> :Ag<CR>
+noremap <C-f> :Find<CR>
 " Jump to the existing window if possible
 let g:fzf_buffers_jump = 1
-" Ag to search file contents only
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+
 " Close the fzf buffer quicker when you hit esc
 " Some sort of nvim bug
 " See https://github.com/junegunn/fzf/issues/632

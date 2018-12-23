@@ -32,7 +32,7 @@ curl --silent -L \
 	&& ./nvim.appimage --appimage-extract \
 	&& sudo rm -rf /opt/nvim \
 	&& sudo mv ./squashfs-root /opt/nvim \
-	&& sudo ln -s /opt/nvim/usr/bin/nvim /usr/bin/nvim || true \
+	&& sudo ln -s /opt/nvim/usr/bin/nvim /usr/local/bin/nvim || true \
 	&& rm ./nvim.appimage
 
 echo "Installing python for neovim"
@@ -44,8 +44,8 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 echo "Installing diff-so-fancy"
-sudo curl --silent -L https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o /usr/bin/diff-so-fancy \
-	&& sudo chmod +x /usr/bin/diff-so-fancy
+sudo curl --silent -L https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o /usr/local/bin/diff-so-fancy \
+	&& sudo chmod +x /usr/local/bin/diff-so-fancy
 
 echo "Installing fasd"
 git clone https://github.com/clvv/fasd.git /tmp/fasd
@@ -59,7 +59,7 @@ rustup component add rls-preview rust-analysis rust-src
 echo "Installing terraform"
 wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
 unzip terraform_0.11.10_linux_amd64.zip
-sudo install terraform /usr/bin
+sudo install terraform /usr/local/bin
 rm terraform terraform_0.11.10_linux_amd64.zip
 
 echo "Installing go"
