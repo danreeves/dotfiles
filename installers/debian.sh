@@ -76,3 +76,6 @@ source ~/.nvm/nvm.sh
 echo "Installing node"
 nvm install node
 node --version
+
+echo "Installing Heroku"
+curl https://cli-assets.heroku.com/install.sh | sh
