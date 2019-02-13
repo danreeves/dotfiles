@@ -1,4 +1,6 @@
 # Set up the prompt
+export PURE_GIT_UP_ARROW='^'
+export PURE_GIT_DOWN_ARROW='v'
 fpath=( "$HOME/.zfunctions" $fpath )
 autoload -U promptinit; promptinit
 prompt pure
