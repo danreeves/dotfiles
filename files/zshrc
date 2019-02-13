@@ -24,6 +24,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 ### Go path
 export PATH="/opt/go/bin:$PATH"
 export GOPATH="$HOME/go"
+### Luarocks path
+export PATH="$HOME/.luarocks/bin:$PATH"
 
 ### history file config
 HISTFILE=~/.zsh_history

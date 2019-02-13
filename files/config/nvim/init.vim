@@ -42,10 +42,7 @@ Plug 'flowtype/vim-flow'
 Plug 'carlosrocha/vim-flow-plus'
 " JavaScript
 Plug 'pangloss/vim-javascript'
-" GraphQL
-" Plug 'jparise/vim-graphql'
-" styled-components
-" Plug 'styled-components/vim-styled-components'
+" LSP Client
 Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
       \ 'do': 'bash install.sh',
@@ -54,7 +51,23 @@ Plug 'autozimu/LanguageClient-neovim', {
 call plug#end()
 " End plugins
 """""""""""""
-
+if (has("nvim"))
+  "For Neovim 0.1.3 and 0.1.4 <
+  "https://github.com/neovim/neovim/pull/2198 >
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+"        "For Neovim > 0.1.5 and Vim > patch 7.4.1799 <
+"        https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162
+"        >
+"          "Based on Vim patch 7.4.1770 (`guicolors` option) <
+"          https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd
+"          >
+"            " <
+"            https://github.com/neovim/neovim/wiki/Following-HEAD#20160511
+"            >
+if (has("termguicolors"))
+  set termguicolors
+endif
 " Begin config
 """"""""""""""
 syntax on
@@ -177,13 +190,20 @@ let g:ale_fixers = {
       \   ],
       \   'go': [
       \       'gofmt',
-      \   ]
+      \   ],
       \}
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
 
 let g:ale_fix_on_save = 1
+
+" Hack for lua fix on save
+function LuaFmt()
+  silent !luaformatter % --autosave
+  edit
+endfunction
+autocmd bufwritepost *.lua call LuaFmt()
 
 " LanguageServer config
 let g:LanguageClient_serverCommands = {
@@ -290,14 +310,14 @@ function! LightlineLinterErrors() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
+  return l:counts.total == 0 ? '' : printf('%d X', all_errors)
 endfunction
 
 function! LightlineLinterOK() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '✓ ' : ''
+  return l:counts.total == 0 ? 'OK' : ''
 endfunction
 
 function! LightlineFlowCoverage()
