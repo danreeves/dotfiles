@@ -7,19 +7,29 @@ get_latest_release() {
 }
 
 echo "Installing from apt"
-sudo apt-get install \
+sudo apt-get install -y \
+	zsh \
+	curl \
+	unzip \
         wget \
 	zsh-syntax-highlighting \
         python \
         python3 \
         python-pip \
         python3-pip \
-        iputils-ping
+        iputils-ping \
+        tmux
 
 echo "Installing git-town"
 curl --silent -L "https://github.com/Originate/git-town/releases/download/$(get_latest_release Originate/git-town)/git-town-amd64.deb" -o git-town.deb
 sudo dpkg -i git-town.deb
 rm git-town.deb
+
+echo "Installing pure prompt"
+git clone https://github.com/intelfx/pure.git ~/.pure
+mkdir -p ~/.zfunctions
+ln -s ~/.pure/pure.zsh "$HOME/.zfunctions/prompt_pure_setup"
+ln -s ~/.pure/async.zsh "$HOME/.zfunctions/async"
 
 echo "Installing zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
@@ -53,8 +63,14 @@ cd /tmp/fasd
 sudo make install PREFIX=/usr
 rm -rf /tmp/fasd
 
+echo "Installing Rust"
+curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
+
 echo "Installing rls"
 rustup component add rls-preview rust-analysis rust-src
+
+echo "Installing ripgrep"
+cargo install ripgrep
 
 echo "Installing terraform"
 wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
@@ -79,3 +95,14 @@ node --version
 
 echo "Installing Heroku"
 curl https://cli-assets.heroku.com/install.sh | sh
+
+echo "Installing lua"
+sudo apt install lua5.1 liblua5.1-dev
+wget https://luarocks.org/releases/luarocks-3.0.4.tar.gz
+tar zxpf luarocks-3.0.4.tar.gz
+cd luarocks-3.0.4
+./configure; sudo make bootstrap
+cd ..
+rm -rf luarocks-3.0.4
+rm luarocks-3.0.4.tar.gz
+luarocks intall --local formatter
