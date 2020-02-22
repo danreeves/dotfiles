@@ -86,7 +86,7 @@ rm go1.11.4.linux-amd64.tar.gz
 
 echo "Installing nvm"
 mkdir ~/.nvm
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 source ~/.nvm/nvm.sh
 
 echo "Installing node"
