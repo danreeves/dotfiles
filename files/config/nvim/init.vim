@@ -4,6 +4,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " One Dark theme
 Plug 'joshdick/onedark.vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 " Automatic syntax for a bunch of languages
 Plug 'sheerun/vim-polyglot'
 " Detect editorconfig file
@@ -73,7 +74,7 @@ endif
 syntax on
 set termguicolors
 " One Dark colour theme
-colorscheme onedark
+colorscheme dracula
 " Refresh every 250ms
 set updatetime=250
 " Show 80 col
