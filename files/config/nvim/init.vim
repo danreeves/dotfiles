@@ -3,7 +3,6 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " One Dark theme
-Plug 'joshdick/onedark.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
 " Automatic syntax for a bunch of languages
 Plug 'sheerun/vim-polyglot'
@@ -13,7 +12,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'airblade/vim-gitgutter'
 " Simple tab autocompletion
 Plug 'ajh17/vimcompletesme'
-" Automatice quote & brace completion
+" Automatic quote & brace completion
 Plug 'raimondi/delimitmate'
 " Linting
 Plug 'w0rp/ale'
@@ -31,16 +30,10 @@ Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " fzf vim plugin
 Plug 'junegunn/fzf.vim'
-" No distractions mode
-Plug 'junegunn/goyo.vim'
 " Minimal status bar
 Plug 'itchyny/lightline.vim'
 " Highlight matching tag
 Plug 'valloric/matchtagalways'
-" Flow omnifunc
-Plug 'flowtype/vim-flow'
-" Flow coverage
-Plug 'carlosrocha/vim-flow-plus'
 " JavaScript
 Plug 'pangloss/vim-javascript'
 " LSP Client
@@ -52,31 +45,27 @@ Plug 'autozimu/LanguageClient-neovim', {
 call plug#end()
 " End plugins
 """""""""""""
+
 if (has("nvim"))
   "For Neovim 0.1.3 and 0.1.4 <
   "https://github.com/neovim/neovim/pull/2198 >
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
-"        "For Neovim > 0.1.5 and Vim > patch 7.4.1799 <
-"        https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162
-"        >
-"          "Based on Vim patch 7.4.1770 (`guicolors` option) <
-"          https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd
-"          >
-"            " <
-"            https://github.com/neovim/neovim/wiki/Following-HEAD#20160511
-"            >
+
 if (has("termguicolors"))
   set termguicolors
 endif
+
 " Begin config
 """"""""""""""
 syntax on
 set termguicolors
-" One Dark colour theme
+" Theme
+" Turn off italics
+let g:dracula_italic = 0
 colorscheme dracula
-" Refresh every 250ms
-set updatetime=250
+" Refresh every 100ms
+set updatetime=100
 " Show 80 col
 set colorcolumn=80
 " Show line number
@@ -133,7 +122,6 @@ set wildmenu
 set wildmode=longest,list,full
 " Highlight the current line
 set cursorline
-
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
 
@@ -149,50 +137,35 @@ function! s:FixWhitespace(line1,line2)
   silent! execute ':' . a:line1 . ',' . a:line2 . 's/\\\@<!\s\+$//'
   call setpos('.', l:save_cursor)
 endfunction
+
 " Run :FixWhitespace to remove end of line white space
 command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
+
 " Fix whitespace on save
 au BufWritePre * :FixWhitespace
 
 " Flow syntax
 let g:javascript_plugin_flow = 1
 
-"Use locally installed flow
-function! FindLocalFlow ()
-  let project_path = substitute(system('git rev-parse --show-toplevel'), '\n\+$', '', '')
-  let flow_path = project_path . '/node_modules/.bin/flow'
-  if executable(flow_path)
-    return flow_path
-  endif
-  return 'flow'
-endfunction
-
-" Use local flow bin if it exists
-let g:flow#flowpath = FindLocalFlow()
-let g:ale_javascript_flow_executable = FindLocalFlow()
-let g:javascript_flow_use_global = 0
-
-" Disable flow quickfix box popping up
-let g:flow#showquickfix = 0
-" Underline uncovered lines
-highlight FlowCoverage gui=underline
-
 " ALE Settings
-let g:ale_linters = {
-      \  'javascript': [],
-      \}
-
-let g:ale_fixers = {
-      \   'javascript': [
-      \       'prettier',
-      \   ],
-      \   'rust': [
-      \       'rustfmt',
-      \   ],
-      \   'go': [
-      \       'gofmt',
-      \   ],
-      \}
+" let g:ale_linters = {
+"       \  'javascript': [],
+"       \}
+"
+" let g:ale_fixers = {
+"       \   'javascript': [
+"       \       'prettier',
+"       \   ],
+"       \   'typescript': [
+"       \       'prettier',
+"       \   ],
+"       \   'rust': [
+"       \       'rustfmt',
+"       \   ],
+"       \   'go': [
+"       \       'gofmt',
+"       \   ],
+"       \}
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
@@ -217,9 +190,15 @@ let g:NERDTreeIgnore = ['node_modules', 'tmp', 'flow-typed', '.git', '.DS_Store'
 let g:NERDTreeShowHidden = 1
 
 " NERDCommenter
-" <leader>c<space> is NERDComToggleComment
+" <leader>c<space> is the default NERDComToggleComment
+" here we rebind it to Ctrl -
+" and Ctrl \
 map <C-_> <leader>c<space>
+map <C-\> <leader>c<space>
 let g:NERDSpaceDelims = 1
+let g:NERDDefaultAlign = 'left'
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
 
 " fzf keybinds
 " Fuzzy search for filenames with Ctrl+p
@@ -281,12 +260,10 @@ let g:lightline = {
       \      ['lineinfo'],
       \      ['percent'],
       \      ['linter_warnings', 'linter_errors', 'linter_ok'],
-      \      ['flow'],
       \    ],
       \  },
       \  'component_function': {
       \    'gitbranch': 'fugitive#head',
-      \    'flow': 'LightlineFlowCoverage',
       \  },
       \ 'component_expand': {
       \   'linter_warnings': 'LightlineLinterWarnings',
@@ -321,21 +298,12 @@ function! LightlineLinterOK() abort
   return l:counts.total == 0 ? 'OK' : ''
 endfunction
 
-function! LightlineFlowCoverage()
-  if exists('b:flow_coverage_status')
-    return b:flow_coverage_status
-  endif
-  return ''
-endfunction
-
-autocmd User ALELint call s:MaybeUpdateLightline()
-
-" Update and show lightline but only if it's visible (e.g., not in Goyo)
-function! s:MaybeUpdateLightline()
-  if exists('#lightline')
-    call lightline#update()
-  end
-endfunction
+augroup lightline#ale
+  autocmd!
+  autocmd User ALEJobStarted call lightline#update()
+  autocmd User ALELintPost call lightline#update()
+  autocmd User ALEFixPost call lightline#update()
+augroup END
 
 " Highlight matching tags in these filetypes
 let g:mta_filetypes = {
@@ -345,6 +313,7 @@ let g:mta_filetypes = {
       \ 'xml' : 1,
       \ 'jinja' : 1,
       \}
+
 " Custom highlighting
 let g:mta_use_matchparen_group = 0
 let g:mta_set_default_matchtag_color = 0
