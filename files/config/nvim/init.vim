@@ -3,15 +3,13 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " One Dark theme
-Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'joshdick/onedark.vim'
 " Automatic syntax for a bunch of languages
 Plug 'sheerun/vim-polyglot'
 " Detect editorconfig file
 Plug 'editorconfig/editorconfig-vim'
 " GitGutter
 Plug 'airblade/vim-gitgutter'
-" Simple tab autocompletion
-Plug 'ajh17/vimcompletesme'
 " Automatic quote & brace completion
 Plug 'raimondi/delimitmate'
 " Linting
@@ -41,6 +39,20 @@ Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
       \ 'do': 'bash install.sh',
       \ }
+" Autocomplete
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-html-subscope'
+Plug 'ncm2/ncm2-markdown-subscope'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-racer'
+Plug 'ncm2/ncm2-cssomni'
+Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
+Plug 'ncm2/nvim-typescript', {'do': './install.sh'}
+Plug 'wellle/tmux-complete.vim'
+Plug 'fgrsnau/ncm2-otherbuf'
+Plug 'megalithic/ncm2-elm', { 'for': ['elm'], 'do': 'npm i -g elm-oracle' }
 
 call plug#end()
 " End plugins
@@ -61,9 +73,7 @@ endif
 syntax on
 set termguicolors
 " Theme
-" Turn off italics
-let g:dracula_italic = 0
-colorscheme dracula
+colorscheme onedark
 " Refresh every 100ms
 set updatetime=100
 " Show 80 col
@@ -149,7 +159,7 @@ let g:javascript_plugin_flow = 1
 
 " ALE Settings
 " let g:ale_linters = {
-"       \  'javascript': [],
+"       \  'javascript': ['eslint', 'xo', 'flow'],
 "       \}
 "
 " let g:ale_fixers = {
@@ -171,6 +181,17 @@ let g:javascript_plugin_flow = 1
 map <Leader>p <Plug>(ale_fix)
 
 let g:ale_fix_on_save = 1
+
+" NCM2 config
+" suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
+set shortmess+=c
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+inoremap <c-c> <ESC>
+" Use <TAB> to select the popup menu:
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Hack for lua fix on save
 function LuaFmt()
