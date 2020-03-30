@@ -1,6 +1,7 @@
 # Set up the prompt
 export PURE_GIT_UP_ARROW='^'
 export PURE_GIT_DOWN_ARROW='v'
+export PURE_GIT_DIRTY=' *'
 fpath=( "$HOME/.zfunctions" $fpath )
 autoload -U promptinit; promptinit
 prompt pure
@@ -76,7 +77,7 @@ export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 alias vim="nvim"
 alias vi="nvim"
 export EDITOR="nvim"
-export REACT_EDITOR="nvim"
+export REACT_EDITOR="subl"
 
 # v [path]
 # Opens the passed path or the current dir in vi
