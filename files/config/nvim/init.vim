@@ -228,7 +228,17 @@ noremap <C-p> :Files<CR>
 noremap <C-f> :Find<CR>
 " Jump to the existing window if possible
 let g:fzf_buffers_jump = 1
-command! -bang -nargs=* Find call fzf#vim#grep('rg --line-number --no-heading '.shellescape(<q-args>), 1, <bang>0)
+" command! -bang -nargs=* Find call fzf#vim#grep('rg --line-number --no-heading '.shellescape(<q-args>), 1, <bang>0)
+command! -nargs=* -bang Find call RipgrepFzf(<q-args>, <bang>0)
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command, '--info=inline']}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
 
 " Close the fzf buffer quicker when you hit esc
 " Some sort of nvim bug
