@@ -124,7 +124,6 @@ fi
 
 # fzf fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# export FZF_DEFAULT_COMMAND='rg --files | rg --smart-case --color=always'
 
 alias du='ncdu --color dark -rr -x --exclude .git --exclude node_modules'
 
