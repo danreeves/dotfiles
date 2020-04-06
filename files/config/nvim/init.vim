@@ -230,7 +230,7 @@ noremap <C-f> :Find<CR>
 let g:fzf_buffers_jump = 1
 
 command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', '~/.config/nvim/fzf-preview.sh {}']}, <bang>0)
+    \ call fzf#vim#files(<q-args>, {'options': ['--info=inline', '--preview', '~/.config/nvim/fzf-preview.sh {}']}, <bang>0)
 
 command! -nargs=* -bang Find call RipgrepFind(<q-args>, <bang>0)
 
