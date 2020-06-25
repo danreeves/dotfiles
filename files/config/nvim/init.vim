@@ -2,8 +2,8 @@
 """""""""""""""
 call plug#begin('~/.config/nvim/plugged')
 
-" One Dark theme
-Plug 'joshdick/onedark.vim'
+" Theme
+Plug 'andreypopp/vim-colors-plain'
 " Automatic syntax for a bunch of languages
 Plug 'sheerun/vim-polyglot'
 " Detect editorconfig file
@@ -28,8 +28,6 @@ Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " fzf vim plugin
 Plug 'junegunn/fzf.vim'
-" Minimal status bar
-Plug 'itchyny/lightline.vim'
 " Highlight matching tag
 Plug 'valloric/matchtagalways'
 " JavaScript
@@ -52,7 +50,6 @@ Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
 Plug 'ncm2/nvim-typescript', {'do': './install.sh'}
 Plug 'wellle/tmux-complete.vim'
 Plug 'fgrsnau/ncm2-otherbuf'
-Plug 'megalithic/ncm2-elm', { 'for': ['elm'], 'do': 'npm i -g elm-oracle' }
 
 call plug#end()
 " End plugins
@@ -73,7 +70,8 @@ endif
 syntax on
 set termguicolors
 " Theme
-colorscheme onedark
+set background=light " Set to dark for a dark variant
+colorscheme plain
 " Refresh every 100ms
 set updatetime=100
 " Show 80 col
@@ -135,6 +133,11 @@ set cursorline
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
 
+" tabs are cool now
+set softtabstop=0 noexpandtab
+set shiftwidth=4
+set tabstop=4
+
 " Set the cursor back to a vertical bar on exit
 au VimLeave * set guicursor=a:ver1-blinkon1
 
@@ -155,32 +158,36 @@ command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 au BufWritePre * :FixWhitespace
 
 " Flow syntax
-let g:javascript_plugin_flow = 1
+let g:javascript_plugin_flow = 0
 
 " ALE Settings
 " let g:ale_linters = {
 "       \  'javascript': ['eslint', 'xo', 'flow'],
 "       \}
 "
-" let g:ale_fixers = {
-"       \   'javascript': [
-"       \       'prettier',
-"       \   ],
-"       \   'typescript': [
-"       \       'prettier',
-"       \   ],
-"       \   'rust': [
-"       \       'rustfmt',
-"       \   ],
-"       \   'go': [
-"       \       'gofmt',
-"       \   ],
-"       \}
+let g:ale_fixers = {
+      \   'javascript': [
+      \       'prettier',
+      \   ],
+      \   'typescript': [
+      \       'prettier',
+      \   ],
+      \   'typescriptreact': [
+      \       'prettier',
+      \   ],
+      \   'rust': [
+      \       'rustfmt',
+      \   ],
+      \   'go': [
+      \       'gofmt',
+      \   ],
+      \}
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
 
 let g:ale_fix_on_save = 1
+
 
 " NCM2 config
 " suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
@@ -190,8 +197,8 @@ set completeopt=noinsert,menuone,noselect
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
 " Use <TAB> to select the popup menu:
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Hack for lua fix on save
 function LuaFmt()
@@ -202,8 +209,12 @@ autocmd bufwritepost *.lua call LuaFmt()
 
 " LanguageServer config
 let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rls'],
-      \ }
+	\ 'rust': ['rls'],
+	\ 'javascript': ['typescript-language-server', '--stdio'],
+	\ 'javascript.jsx': ['typescript-language-server', '--stdio'],
+	\ 'typescript': ['typescript-language-server', '--stdio'],
+	\ 'typescriptreacreactt': ['typescript-language-server', '--stdio'],
+	\ }
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
@@ -223,24 +234,14 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " fzf keybinds
 " Fuzzy search for filenames with Ctrl+p
-noremap <C-p> :Files<CR>
+noremap <C-p> :GitFiles<CR>
 " Search for text in files with Ctrl+f
-noremap <C-f> :Find<CR>
+noremap <C-f> :Rg<CR>
 " Jump to the existing window if possible
 let g:fzf_buffers_jump = 1
-
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, {'options': ['--info=inline', '--preview', '~/.config/nvim/fzf-preview.sh {}']}, <bang>0)
-
-command! -nargs=* -bang Find call RipgrepFind(<q-args>, <bang>0)
-
-function! RipgrepFind(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command, '--info=inline', '--preview', '~/.config/nvim/fzf-preview.sh {}']}
-  call fzf#vim#grep(initial_command, 1, spec, a:fullscreen)
-endfunction
+" Hide the > fzf status line
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 " Close the fzf buffer quicker when you hit esc
 " Some sort of nvim bug
@@ -268,65 +269,6 @@ noremap <Leader>9 9gt
 " Alias :gh to :Gbrowse
 cnoreabbrev gh Gbrowse
 
-" Status bar config
-" Remove redundant mode line
-set noshowmode
-let g:lightline = {
-      \  'colorscheme': 'one',
-      \  'active': {
-      \    'left': [
-      \      [ 'mode' ],
-      \      ['gitbranch', 'filename', 'modified']
-      \    ],
-      \    'right': [
-      \      ['lineinfo'],
-      \      ['percent'],
-      \      ['linter_warnings', 'linter_errors', 'linter_ok'],
-      \    ],
-      \  },
-      \  'component_function': {
-      \    'gitbranch': 'fugitive#head',
-      \  },
-      \ 'component_expand': {
-      \   'linter_warnings': 'LightlineLinterWarnings',
-      \   'linter_errors': 'LightlineLinterErrors',
-      \   'linter_ok': 'LightlineLinterOK'
-      \ },
-      \ 'component_type': {
-      \   'linter_warnings': 'warning',
-      \   'linter_errors': 'error',
-      \   'linter_ok': 'ok',
-      \ },
-      \}
-
-function! LightlineLinterWarnings() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf('%d ●', all_non_errors)
-endfunction
-
-function! LightlineLinterErrors() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf('%d X', all_errors)
-endfunction
-
-function! LightlineLinterOK() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? 'OK' : ''
-endfunction
-
-augroup lightline#ale
-  autocmd!
-  autocmd User ALEJobStarted call lightline#update()
-  autocmd User ALELintPost call lightline#update()
-  autocmd User ALEFixPost call lightline#update()
-augroup END
-
 " Highlight matching tags in these filetypes
 let g:mta_filetypes = {
       \ 'javascript.jsx': 1,
@@ -340,6 +282,18 @@ let g:mta_filetypes = {
 let g:mta_use_matchparen_group = 0
 let g:mta_set_default_matchtag_color = 0
 highlight MatchTag gui=bold
+
+set statusline=
+set statusline+=%f
+set statusline+=%{&modified?\"\ +\":\"\"}
+set statusline+=%{&readonly?\"\ [Read\ Only]\":\"\"}
+set statusline+=%=
+set statusline+=%{FugitiveHead()}
+
+highlight Pmenu guibg=gray guifg=white
+
+" Set last because something is resetting it
+set noshowmode
 
 " MUST COME LAST
 " Read project .vimrc files

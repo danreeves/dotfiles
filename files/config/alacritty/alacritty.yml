@@ -87,36 +87,35 @@ font:
 debug:
   render_timer: false
 
-# Colors (One Dark)
 colors:
   # Default colors
   primary:
-    background: '#282c34'
-    foreground: '#abb2bf'
+    background: '#dddddd'
+    foreground: '#424242'
 
   # Normal colors
   normal:
     # NOTE: Use '#131613' for the `black` color if you'd like to see
     # black text on the background.
-    black:   '#282c34'
-    red:     '#e06c75'
-    green:   '#98c379'
-    yellow:  '#d19a66'
-    blue:    '#61afef'
-    magenta: '#c678dd'
-    cyan:    '#56b6c2'
+    black: '#424242'
     white:   '#abb2bf'
+    red:    '#20A5BA'
+    green:    '#20A5BA'
+    yellow:    '#20A5BA'
+    blue:    '#20A5BA'
+    magenta:    '#20A5BA'
+    cyan:    '#20A5BA'
 
   # Bright colors
   bright:
-    black:   '#5c6370'
-    red:     '#e06c75'
-    green:   '#98c379'
-    yellow:  '#d19a66'
-    blue:    '#61afef'
-    magenta: '#c678dd'
-    cyan:    '#56b6c2'
-    white:   '#ffffff'
+    black: '#424242'
+    white:   '#abb2bf'
+    red:    '#20A5BA'
+    green:    '#20A5BA'
+    yellow:    '#20A5BA'
+    blue:    '#20A5BA'
+    magenta:    '#20A5BA'
+    cyan:    '#20A5BA'
   # Indexed Colors
   #
   # The indexed colors include all colors from 16 to 256.
