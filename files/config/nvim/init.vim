@@ -135,7 +135,7 @@ set mouse=a
 
 " tabs are cool now
 set softtabstop=0 noexpandtab
-set shiftwidth=4
+set shiftwidth=2
 set tabstop=4
 
 " Set the cursor back to a vertical bar on exit
