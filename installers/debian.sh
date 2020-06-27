@@ -8,16 +8,18 @@ get_latest_release() {
 
 echo "Installing from apt"
 sudo apt-get install -y \
-	zsh \
-	curl \
-	unzip \
-        wget \
-        python \
-        python3 \
-        python-pip \
-        python3-pip \
-        iputils-ping \
-        tmux
+  gettext \
+  libgettextpo-dev \
+  zsh \
+  curl \
+  unzip \
+  wget \
+  python \
+  python3 \
+  python-pip \
+  python3-pip \
+  iputils-ping \
+  tmux
 
 echo "Installing git-town"
 curl --silent -L "https://github.com/Originate/git-town/releases/download/$(get_latest_release Originate/git-town)/git-town-amd64.deb" -o git-town.deb
