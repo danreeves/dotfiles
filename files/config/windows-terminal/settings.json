@@ -10,7 +10,8 @@
       "defaults": {
 	        "fontFace": "Source Code Pro",
 	        "fontSize": 10,
-	        "useAcrylic": false
+	        "useAcrylic": false,
+	        "cursorColor": "#000"
 	      },
       "list": [
 	        {
@@ -21,8 +22,7 @@
 			        "colorScheme": "plain",
 			        "useAcrylic": false,
 			        "snapOnInput": true,
-			        "startingDirectory": "//wsl$/Debian/home/rain",
-			        "cursorColor": "#000"
+			        "startingDirectory": "//wsl$/Debian/home/rain"
 			      },
 	        {
 			        // Make changes here to the powershell.exe profile
@@ -58,7 +58,7 @@
 	        "background": "#F1F1F1",
 	        "black": "#222222",
 	        "blue": "#008EC4",
-	        "brightBlack": "#545454",
+	        "brightBlack": "#F1F1F1",
 	        "brightBlue": "#008EC4",
 	        "brightCyan": "#008EC4",
 	        "brightGreen": "#10A778",
