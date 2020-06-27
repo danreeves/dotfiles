@@ -90,32 +90,32 @@ debug:
 colors:
   # Default colors
   primary:
-    background: '#dddddd'
+    background: '#f1f1f1'
     foreground: '#424242'
 
   # Normal colors
   normal:
     # NOTE: Use '#131613' for the `black` color if you'd like to see
     # black text on the background.
-    black: '#424242'
-    white:   '#abb2bf'
-    red:    '#20A5BA'
-    green:    '#20A5BA'
-    yellow:    '#20A5BA'
-    blue:    '#20A5BA'
-    magenta:    '#20A5BA'
-    cyan:    '#20A5BA'
+    black: '#222222'
+    white:   '#008EC4'
+    red:    '#C30771'
+    green:    '#10A778'
+    yellow:    '#008EC4'
+    blue:    '#008EC4'
+    magenta:    '#008EC4'
+    cyan:    '#008EC4'
 
   # Bright colors
   bright:
-    black: '#424242'
-    white:   '#abb2bf'
-    red:    '#20A5BA'
-    green:    '#20A5BA'
-    yellow:    '#20A5BA'
-    blue:    '#20A5BA'
-    magenta:    '#20A5BA'
-    cyan:    '#20A5BA'
+    black: '#545454'
+    white:   '#008EC4'
+    red:    '#C30771'
+    green:    '#10A778'
+    yellow:    '#008EC4'
+    blue:    '#008EC4'
+    magenta:    '#008EC4'
+    cyan:    '#008EC4'
   # Indexed Colors
   #
   # The indexed colors include all colors from 16 to 256.
