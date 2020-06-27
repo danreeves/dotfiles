@@ -28,6 +28,8 @@ export PATH="/opt/go/bin:$PATH"
 export GOPATH="$HOME/go"
 ### Luarocks path
 export PATH="$HOME/.luarocks/bin:$PATH"
+### Debian path
+export PATH="/usr/bin:$PATH"
 
 ### history file config
 HISTFILE=~/.zsh_history
@@ -141,3 +143,6 @@ done
 
 ### zsh syntax highlighting - Must be last
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+### source asdf vm manager
+source /home/raindish/.asdf/asdf.sh
