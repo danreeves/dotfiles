@@ -12,7 +12,6 @@ sudo apt-get install -y \
 	curl \
 	unzip \
         wget \
-	zsh-syntax-highlighting \
         python \
         python3 \
         python-pip \
@@ -33,6 +32,9 @@ ln -s ~/.pure/async.zsh "$HOME/.zfunctions/async"
 
 echo "Installing zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
+echo "Installing zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
 
 echo "Installing neovim"
 curl --silent -L \
