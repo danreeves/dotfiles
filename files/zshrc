@@ -137,7 +137,9 @@ done
 
 
 ### source asdf vm manager
-source /home/raindish/.asdf/asdf.sh
+if [[ -f "~/.asdf/asdf.sh" ]]; then
+  source ~/.asdf/asdf.sh
+fi
 
 export PATH="/usr/local/opt/awscli@1/bin:$PATH"
 
