@@ -272,6 +272,7 @@ cnoreabbrev gh Gbrowse
 " Highlight matching tags in these filetypes
 let g:mta_filetypes = {
       \ 'javascript.jsx': 1,
+      \ 'javascript': 1,
       \ 'html' : 1,
       \ 'xhtml' : 1,
       \ 'xml' : 1,
@@ -282,6 +283,11 @@ let g:mta_filetypes = {
 let g:mta_use_matchparen_group = 0
 let g:mta_set_default_matchtag_color = 0
 highlight MatchTag gui=bold
+hi MyTagOverride guifg=#008EC4 guibg=#F1F1F1
+hi! link jsxPunct MyTagOverride
+hi! link jsxTagName MyTagOverride
+hi! link jsxComponentName MyTagOverride
+hi! link jsxCloseString MyTagOverride
 
 set statusline=
 set statusline+=%f
