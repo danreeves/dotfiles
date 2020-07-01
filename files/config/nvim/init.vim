@@ -109,7 +109,7 @@ set laststatus=2
 " Show trailing whitespace
 set list
 " Display tabs an invisible characters
-set listchars=tab:▸\ ,trail:▫
+set listchars=tab:\ \ ,trail:▫
 " Show where you are
 set ruler
 " Show context above/below cursorline
@@ -279,10 +279,10 @@ let g:mta_filetypes = {
       \ 'jinja' : 1,
       \}
 
-" Custom highlighting
-let g:mta_use_matchparen_group = 0
-let g:mta_set_default_matchtag_color = 0
-highlight MatchTag gui=bold
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 hi MyTagOverride guifg=#008EC4 guibg=#F1F1F1
 hi! link jsxPunct MyTagOverride
 hi! link jsxTagName MyTagOverride
