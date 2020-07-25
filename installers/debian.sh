@@ -22,7 +22,7 @@ sudo apt-get install -y \
   tmux
 
 echo "Installing git-town"
-curl --silent -L "https://github.com/git-town/git-town/releases/download/v7.4.0/git-town_7.4.0_linux_intel_64.deb" -o git-town.deb
+curl --silent -L "https://github.com/git-town/git-town/releases/download/v7.3.0/git-town-amd64.deb" -o git-town.deb
 sudo dpkg -i git-town.deb
 rm git-town.deb
 
