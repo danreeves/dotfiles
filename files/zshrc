@@ -137,9 +137,9 @@ done
 
 
 ### source asdf vm manager
-if [[ -f "~/.asdf/asdf.sh" ]]; then
+# if [[ -f "~/.asdf/asdf.sh" ]]; then
   source ~/.asdf/asdf.sh
-fi
+# fi
 
 export PATH="/usr/local/opt/awscli@1/bin:$PATH"
 

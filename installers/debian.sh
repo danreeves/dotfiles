@@ -22,7 +22,7 @@ sudo apt-get install -y \
   tmux
 
 echo "Installing git-town"
-curl --silent -L "https://github.com/Originate/git-town/releases/download/$(get_latest_release Originate/git-town)/git-town-amd64.deb" -o git-town.deb
+curl --silent -L "https://github.com/git-town/git-town/releases/download/v7.4.0/git-town_7.4.0_linux_intel_64.deb" -o git-town.deb
 sudo dpkg -i git-town.deb
 rm git-town.deb
 
@@ -68,45 +68,24 @@ sudo make install PREFIX=/usr
 rm -rf /tmp/fasd
 
 echo "Installing Rust"
-curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 echo "Installing rls"
-rustup component add rls-preview rust-analysis rust-src
+rustup component add rls rust-analysis rust-src
 
 echo "Installing ripgrep"
 cargo install ripgrep
 
-echo "Installing terraform"
-wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
-unzip terraform_0.11.10_linux_amd64.zip
-sudo install terraform /usr/local/bin
-rm terraform terraform_0.11.10_linux_amd64.zip
+echo "Installing asdf"
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+cd ~/.asdf
+git checkout "$(git describe --abbrev=0 --tags)"
+chmod +x ~/.asdf/asdf.sh
+source ~/.asdf/asdf.sh
 
-echo "Installing go"
-wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
-tar -xvf go1.11.4.linux-amd64.tar.gz
-sudo mv ./go /opt/go
-rm go1.11.4.linux-amd64.tar.gz
+asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+asdf plugin-add luaJIT https://github.com/smashedtoatoms/asdf-luaJIT.git
 
-echo "Installing nvm"
-mkdir ~/.nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-source ~/.nvm/nvm.sh
-
-echo "Installing node"
-nvm install node
-node --version
-
-echo "Installing Heroku"
-curl https://cli-assets.heroku.com/install.sh | sh
-
-echo "Installing lua"
-sudo apt install lua5.1 liblua5.1-dev
-wget https://luarocks.org/releases/luarocks-3.0.4.tar.gz
-tar zxpf luarocks-3.0.4.tar.gz
-cd luarocks-3.0.4
-./configure; sudo make bootstrap
-cd ..
-rm -rf luarocks-3.0.4
-rm luarocks-3.0.4.tar.gz
-luarocks intall --local formatter
+asdf install luaJIT 2.4.4
+asdf install nodejs 12.18.3
