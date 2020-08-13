@@ -32,24 +32,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'valloric/matchtagalways'
 " JavaScript
 Plug 'pangloss/vim-javascript'
-" LSP Client
-Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
 " Autocomplete
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-html-subscope'
-Plug 'ncm2/ncm2-markdown-subscope'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-racer'
-Plug 'ncm2/ncm2-cssomni'
-Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
-Plug 'ncm2/nvim-typescript', {'do': './install.sh'}
-Plug 'wellle/tmux-complete.vim'
 Plug 'fgrsnau/ncm2-otherbuf'
+" IDE Junk
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
 call plug#end()
 " End plugins
@@ -194,11 +185,23 @@ let g:ale_fix_on_save = 1
 set shortmess+=c
 autocmd BufEnter * call ncm2#enable_for_buffer()
 set completeopt=noinsert,menuone,noselect
-" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+" " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" " Use <TAB> to select the popup menu:
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
 
 " Hack for lua fix on save
 function LuaFmt()
@@ -208,13 +211,13 @@ endfunction
 autocmd bufwritepost *.lua call LuaFmt()
 
 " LanguageServer config
-let g:LanguageClient_serverCommands = {
-	\ 'rust': ['rls'],
-	\ 'javascript': ['typescript-language-server', '--stdio'],
-	\ 'javascript.jsx': ['typescript-language-server', '--stdio'],
-	\ 'typescript': ['typescript-language-server', '--stdio'],
-	\ 'typescriptreacreactt': ['typescript-language-server', '--stdio'],
-	\ }
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['rls'],
+"     \ 'javascript': ['typescript-language-server', '--stdio'],
+"     \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
+"     \ 'typescript': ['typescript-language-server', '--stdio'],
+"     \ 'typescriptreacreactt': ['typescript-language-server', '--stdio'],
+"     \ }
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
@@ -330,6 +333,43 @@ set tabline=%!Tabline()
 hi TabLineFill guifg=Grey95
 hi TabLine guifg=Grey60 guibg=Grey95 cterm=none gui=none
 hi TabLineSel guifg=Grey35 guibg=Grey95
+
+ autocmd ColorScheme *
+              \ hi CocErrorSign  ctermfg=Red guifg=#ff0000 |
+              \ hi CocWarningSign  ctermfg=Brown guifg=#ff922b |
+              \ hi CocInfoSign  ctermfg=Yellow guifg=#fab005 |
+              \ hi CocHintSign  ctermfg=Blue guifg=#15aabf |
+              \ hi CocUnderline  cterm=underline gui=underline
+
+"""" coc settings
+" TextEdit might fail if hidden is not set.
+set hidden
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+"""" coc settings
 
 " Set last because something is resetting it
 set noshowmode

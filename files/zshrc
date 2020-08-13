@@ -143,5 +143,9 @@ done
 
 export PATH="/usr/local/opt/awscli@1/bin:$PATH"
 
+func w () {
+  yarn workspace @treasure-data/$@
+};
+
 ### zsh syntax highlighting - Must be last
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
