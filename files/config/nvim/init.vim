@@ -32,6 +32,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'valloric/matchtagalways'
 " JavaScript
 Plug 'pangloss/vim-javascript'
+" Crystal
+Plug 'vim-crystal/vim-crystal'
 " Autocomplete
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
@@ -41,6 +43,7 @@ Plug 'fgrsnau/ncm2-otherbuf'
 " IDE Junk
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-rls'
 
 call plug#end()
 " End plugins
