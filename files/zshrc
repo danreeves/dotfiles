@@ -20,8 +20,11 @@ fi
 # echo -e "\033]6;1;bg;blue;brightness;52\a"
 # clear
 
+### Debian path
+export PATH="/usr/bin:$PATH"
 ### Homebrew path 🍺
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH"
 ### Rust path 🦀
 export PATH="$HOME/.cargo/bin:$PATH"
 ### Go path
@@ -29,8 +32,6 @@ export PATH="/opt/go/bin:$PATH"
 export GOPATH="$HOME/go"
 ### Luarocks path
 export PATH="$HOME/.luarocks/bin:$PATH"
-### Debian path
-export PATH="/usr/bin:$PATH"
 
 ### history file config
 HISTFILE=~/.zsh_history
