@@ -34,12 +34,6 @@ Plug 'valloric/matchtagalways'
 Plug 'pangloss/vim-javascript'
 " Crystal
 Plug 'vim-crystal/vim-crystal'
-" Autocomplete
-" Plug 'ncm2/ncm2'
-" Plug 'roxma/nvim-yarp'
-" Plug 'ncm2/ncm2-bufword'
-" Plug 'ncm2/ncm2-path'
-" Plug 'fgrsnau/ncm2-otherbuf'
 " IDE Junk
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
@@ -328,9 +322,9 @@ function! Tabline()
 endfunction
 set tabline=%!Tabline()
 
-hi TabLineFill guifg=Grey95
-hi TabLine guifg=Grey60 guibg=Grey95 cterm=none gui=none
-hi TabLineSel guifg=Grey35 guibg=Grey95
+hi TabLineFill guifg=#1c1c1c guibg=#262626
+hi TabLine guifg=Grey60 guibg=none cterm=none gui=none
+hi TabLineSel guifg=Grey35 guibg=none
 
 autocmd ColorScheme *
 	  \ hi CocErrorSign  ctermfg=Red guifg=#ff0000 |
