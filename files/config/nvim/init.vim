@@ -3,7 +3,7 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Theme
-Plug 'andreypopp/vim-colors-plain'
+Plug 'pgdouyon/vim-yin-yang'
 " Automatic syntax for a bunch of languages
 Plug 'sheerun/vim-polyglot'
 " Detect editorconfig file
@@ -55,17 +55,13 @@ if (has("nvim"))
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
 
-if (has("termguicolors"))
-  set termguicolors
-endif
-
 " Begin config
 """"""""""""""
 syntax on
 set termguicolors
 " Theme
-set background=light " Set to dark for a dark variant
-colorscheme plain
+set background=dark " Set to dark for a dark variant
+colorscheme yin
 " Refresh every 100ms
 set updatetime=100
 " Show 80 col
@@ -160,22 +156,22 @@ let g:javascript_plugin_flow = 0
 "       \}
 "
 let g:ale_fixers = {
-      \   'javascript': [
-      \       'prettier',
-      \   ],
-      \   'typescript': [
-      \       'prettier',
-      \   ],
-      \   'typescriptreact': [
-      \       'prettier',
-      \   ],
-      \   'rust': [
-      \       'rustfmt',
-      \   ],
-      \   'go': [
-      \       'gofmt',
-      \   ],
-      \}
+	  \   'javascript': [
+	  \       'prettier',
+	  \   ],
+	  \   'typescript': [
+	  \       'prettier',
+	  \   ],
+	  \   'typescriptreact': [
+	  \       'prettier',
+	  \   ],
+	  \   'rust': [
+	  \       'rustfmt',
+	  \   ],
+	  \   'go': [
+	  \       'gofmt',
+	  \   ],
+	  \}
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
@@ -195,9 +191,9 @@ inoremap <c-c> <ESC>
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+	  \ pumvisible() ? "\<C-n>" :
+	  \ <SID>check_back_space() ? "\<TAB>" :
+	  \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -247,15 +243,15 @@ noremap <C-f> :Rg<CR>
 let g:fzf_buffers_jump = 1
 " Hide the > fzf status line
 autocmd! FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+	  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 " Close the fzf buffer quicker when you hit esc
 " Some sort of nvim bug
 " See https://github.com/junegunn/fzf/issues/632
 if has('nvim')
   aug fzf_setup
-    au!
-    au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
+	au!
+	au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
   aug END
 end
 
@@ -277,25 +273,20 @@ cnoreabbrev gh Gbrowse
 
 " Highlight matching tags in these filetypes
 let g:mta_filetypes = {
-      \ 'javascript.jsx': 1,
-      \ 'javascript': 1,
-      \ 'html' : 1,
-      \ 'xhtml' : 1,
-      \ 'xml' : 1,
-      \ 'jinja' : 1,
-      \}
+	  \ 'javascript.jsx': 1,
+	  \ 'javascript': 1,
+	  \ 'html' : 1,
+	  \ 'xhtml' : 1,
+	  \ 'xml' : 1,
+	  \ 'jinja' : 1,
+	  \}
 
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+	  \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+	  \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-hi MyTagOverride guifg=#008EC4 guibg=#F1F1F1
-hi! link jsxPunct MyTagOverride
-hi! link jsxTagName MyTagOverride
-hi! link jsxComponentName MyTagOverride
-hi! link jsxCloseString MyTagOverride
-
-hi CocErrorFloat guifg=white
+" hi CocErrorFloat guifg=white
+" highlight Pmenu guibg=gray guifg=white
 
 set statusline=
 set statusline+=%f
@@ -304,32 +295,34 @@ set statusline+=%{&readonly?\"\ [Read\ Only]\":\"\"}
 set statusline+=%=
 set statusline+=%{FugitiveHead()}
 
-highlight Pmenu guibg=gray guifg=white
+hi StatusLine guibg=#262626
+hi VertSplit guibg=#262626
+set fillchars+=vert:\ 
 
 function! Tabline()
   let s = ''
   for i in range(tabpagenr('$'))
-    let tab = i + 1
-    let winnr = tabpagewinnr(tab)
-    let buflist = tabpagebuflist(tab)
-    let bufnr = buflist[winnr - 1]
-    let bufname = bufname(bufnr)
-    let bufmodified = getbufvar(bufnr, "&mod")
+	let tab = i + 1
+	let winnr = tabpagewinnr(tab)
+	let buflist = tabpagebuflist(tab)
+	let bufnr = buflist[winnr - 1]
+	let bufname = bufname(bufnr)
+	let bufmodified = getbufvar(bufnr, "&mod")
 
-    let s .= '%' . tab . 'T'
-    let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-    let s .= (bufname != '' ? '[ ' . tab .': ' . fnamemodify(bufname, ':t') : '[ ' . tab .': No Name')
+	let s .= '%' . tab . 'T'
+	let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+	let s .= (bufname != '' ? '[ ' . tab .': ' . fnamemodify(bufname, ':t') : '[ ' . tab .': No Name')
 
-    if bufmodified
-      let s .= ' + ]'
+	if bufmodified
+	  let s .= ' + ]'
 	else
 	  let s .= ' ]'
-    endif
+	endif
   endfor
 
   let s .= '%#TabLineFill#'
   if (exists("g:tablineclosebutton"))
-    let s .= '%=%999XX'
+	let s .= '%=%999XX'
   endif
   return s
 endfunction
@@ -339,12 +332,12 @@ hi TabLineFill guifg=Grey95
 hi TabLine guifg=Grey60 guibg=Grey95 cterm=none gui=none
 hi TabLineSel guifg=Grey35 guibg=Grey95
 
- autocmd ColorScheme *
-              \ hi CocErrorSign  ctermfg=Red guifg=#ff0000 |
-              \ hi CocWarningSign  ctermfg=Brown guifg=#ff922b |
-              \ hi CocInfoSign  ctermfg=Yellow guifg=#fab005 |
-              \ hi CocHintSign  ctermfg=Blue guifg=#15aabf |
-              \ hi CocUnderline  cterm=underline gui=underline
+autocmd ColorScheme *
+	  \ hi CocErrorSign  ctermfg=Red guifg=#ff0000 |
+	  \ hi CocWarningSign  ctermfg=Brown guifg=#ff922b |
+	  \ hi CocInfoSign  ctermfg=Yellow guifg=#fab005 |
+	  \ hi CocHintSign  ctermfg=Blue guifg=#15aabf |
+	  \ hi CocUnderline  cterm=underline gui=underline
 
 """" coc settings
 " TextEdit might fail if hidden is not set.
@@ -363,9 +356,9 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
+	execute 'h '.expand('<cword>')
   else
-    call CocAction('doHover')
+	call CocAction('doHover')
   endif
 endfunction
 

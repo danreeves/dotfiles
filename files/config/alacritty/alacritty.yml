@@ -11,7 +11,8 @@ env:
   # Note that some xterm terminfo databases don't declare support for italics.
   # You can verify this by checking for the presence of `smso` and `sitm` in
   # `infocmp xterm-256color`.
-  TERM: xterm-256color
+  # TERM: xterm-256color
+  TERM: alacritty
 
 window:
   dynamic_title: true
@@ -43,11 +44,11 @@ font:
 
   bold:
     family: Source Code Pro
-    style: Medium
+    style: Bold
 
   italic:
     family: Source Code Pro
-    style: Medium
+    style: Medium Italic
 
   # Point size of the font
   size: 12.0
@@ -78,6 +79,7 @@ colors:
   # Default colors
   primary:
     background: '#f1f1f1'
+    background: '#010101'
     foreground: '#424242'
 
   # Normal colors
