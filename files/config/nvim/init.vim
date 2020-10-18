@@ -195,6 +195,9 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+"Crystal
+let g:crystal_define_mappings = 0
+let g:crystal_auto_format = 1
 
 " Hack for lua fix on save
 function LuaFmt()
