@@ -34,6 +34,8 @@ Plug 'valloric/matchtagalways'
 Plug 'pangloss/vim-javascript'
 " Crystal
 Plug 'vim-crystal/vim-crystal'
+" Prettier
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 " IDE Junk
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
@@ -150,15 +152,6 @@ let g:javascript_plugin_flow = 0
 "       \}
 "
 let g:ale_fixers = {
-	  \   'javascript': [
-	  \       'prettier',
-	  \   ],
-	  \   'typescript': [
-	  \       'prettier',
-	  \   ],
-	  \   'typescriptreact': [
-	  \       'prettier',
-	  \   ],
 	  \   'rust': [
 	  \       'rustfmt',
 	  \   ],
@@ -166,6 +159,13 @@ let g:ale_fixers = {
 	  \       'gofmt',
 	  \   ],
 	  \}
+
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+let g:prettier#autoformat_config_present = 1
+let g:prettier#quickfix_enabled = 1
+
+autocmd TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
