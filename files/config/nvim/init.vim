@@ -163,9 +163,7 @@ let g:ale_fixers = {
 let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
 let g:prettier#autoformat_config_present = 1
-let g:prettier#quickfix_enabled = 1
-
-autocmd TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+let g:prettier#quickfix_enabled = 0
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
@@ -326,8 +324,8 @@ endfunction
 set tabline=%!Tabline()
 
 hi TabLineFill guifg=#1c1c1c guibg=#262626
-hi TabLine guifg=Grey60 guibg=none cterm=none gui=none
-hi TabLineSel guifg=Grey35 guibg=none
+hi TabLine guifg=Grey35 guibg=none cterm=none gui=none
+hi TabLineSel guifg=Grey60 guibg=none
 
 autocmd ColorScheme *
 	  \ hi CocErrorSign  ctermfg=Red guifg=#ff0000 |
