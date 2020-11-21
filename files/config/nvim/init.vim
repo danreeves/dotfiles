@@ -162,14 +162,12 @@ let g:ale_fixers = {
 
 let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
-let g:prettier#autoformat_config_present = 1
 let g:prettier#quickfix_enabled = 0
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
 
 let g:ale_fix_on_save = 1
-
 
 " NCM2 config
 " suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
