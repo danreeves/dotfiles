@@ -35,7 +35,9 @@ Plug 'pangloss/vim-javascript'
 " Crystal
 Plug 'vim-crystal/vim-crystal'
 " Prettier
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 " IDE Junk
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
@@ -160,9 +162,10 @@ let g:ale_fixers = {
 	  \   ],
 	  \}
 
-let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
 let g:prettier#quickfix_enabled = 0
+
+autocmd BufWritePre *.md,*.js,*.ts,*.tsx,*.html,*.css,*.json Prettier
 
 " \+p to autofix
 map <Leader>p <Plug>(ale_fix)
