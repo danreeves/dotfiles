@@ -28,6 +28,7 @@ export PATH="/opt/go/bin:$PATH"
 export GOPATH="$HOME/go"
 ### Luarocks path
 export PATH="$HOME/.luarocks/bin:$PATH"
+export PATH="/home/rain/.asdf/installs/luaJIT/2.0.5--2.4.4/bin:$PATH"
 
 ### history file config
 HISTFILE=~/.zsh_history

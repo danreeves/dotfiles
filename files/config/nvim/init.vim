@@ -6,6 +6,8 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'pgdouyon/vim-yin-yang'
 " Automatic syntax for a bunch of languages
 Plug 'sheerun/vim-polyglot'
+" Syntax checking
+Plug 'vim-syntastic/syntastic'
 " Detect editorconfig file
 Plug 'editorconfig/editorconfig-vim'
 " GitGutter
@@ -122,6 +124,14 @@ set softtabstop=0 noexpandtab
 set shiftwidth=2
 set tabstop=4
 
+let g:syntastic_check_on_open = 1
+let g:syntastic_lua_checkers = ["luac", "luacheck"]
+let g:syntastic_lua_luacheck_args = "--no-unused-args"
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 " Set the cursor back to a vertical bar on exit
 au VimLeave * set guicursor=a:ver1-blinkon1
 
@@ -179,11 +189,11 @@ let g:crystal_define_mappings = 0
 let g:crystal_auto_format = 1
 
 " Hack for lua fix on save
-function LuaFmt()
-  silent !luaformatter % --autosave
-  edit
-endfunction
-autocmd bufwritepost *.lua call LuaFmt()
+" function LuaFmt()
+"   silent !luaformatter % --autosave
+"   edit
+" endfunction
+" autocmd bufwritepost *.lua call LuaFmt()
 
 " LanguageServer config
 " let g:LanguageClient_serverCommands = {
