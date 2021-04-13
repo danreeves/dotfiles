@@ -136,6 +136,7 @@ done
 
 ### source asdf vm manager
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
+[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
 
 export PATH="/usr/local/opt/awscli@1/bin:$PATH"
 
@@ -145,3 +146,4 @@ func w () {
 
 ### zsh syntax highlighting - Must be last
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+

@@ -1,3 +1,4 @@
-luaJIT 2.0.5--2.4.4
-nodejs 12.18.3
+luaJIT 2.4.4
+nodejs 14.6.0
 crystal 0.35.1
+ruby 2.7.2
