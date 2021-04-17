@@ -81,7 +81,8 @@ set backspace=2
 " See :help crontab
 set backupcopy=yes
 " Yank and paste with the system clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
+set clipboard=unnamedplus
 " Don't store swapfiles in the current directory
 set directory-=.
 " Save with utf8 encoding
@@ -133,6 +134,8 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " Set the cursor back to a vertical bar on exit
+au VimLeave * set guicursor=a:ver1-blinkon1
+
 au VimLeave * set guicursor=a:ver1-blinkon1
 
 " Try to autoload files that have changed on the file system

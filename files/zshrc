@@ -16,6 +16,8 @@ fi
 # echo -e "\033]6;1;bg;blue;brightness;52\a"
 # clear
 
+### Custom bins
+export PATH="$HOME/bin:$PATH"
 ### Debian path
 export PATH="/usr/bin:$PATH"
 ### Homebrew path 🍺

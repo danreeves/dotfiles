@@ -2,3 +2,4 @@ luaJIT 2.4.4
 nodejs 14.6.0
 crystal 0.35.1
 ruby 2.7.2
+wren-cli 0.3.0
