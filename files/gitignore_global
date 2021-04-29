@@ -20,3 +20,6 @@ TAGS
 
 # nvim config
 .nvimrc
+
+# py
+__pycache__

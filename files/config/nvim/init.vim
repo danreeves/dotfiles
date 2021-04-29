@@ -125,6 +125,8 @@ set softtabstop=0 noexpandtab
 set shiftwidth=2
 set tabstop=4
 
+let g:syntastic_python_python_exec = "python3"
+
 let g:syntastic_check_on_open = 1
 let g:syntastic_lua_checkers = ["luac", "luacheck"]
 let g:syntastic_lua_luacheck_args = "--no-unused-args"
@@ -209,7 +211,7 @@ let g:crystal_auto_format = 1
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
-let g:NERDTreeIgnore = ['node_modules', 'tmp', 'flow-typed', '.git', '.DS_Store']
+let g:NERDTreeIgnore = ['node_modules', 'tmp', 'flow-typed', '.git', '.DS_Store', '__pycache__']
 let g:NERDTreeShowHidden = 1
 
 " NERDCommenter
