@@ -109,6 +109,9 @@ alias gd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-spac
 alias glg="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
 alias gpp='git pull --rebase && git push'
 
+# git recent
+git config --global alias.recent 'branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"'
+
 ### nvm
 if [ -d ~/.nvm ]; then
   export NVM_DIR="$HOME/.nvm"
