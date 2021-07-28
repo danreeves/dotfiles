@@ -211,6 +211,7 @@ let g:crystal_auto_format = 1
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
+map <leader>f :NERDTreeFind<CR>
 let g:NERDTreeIgnore = ['node_modules', 'tmp', 'flow-typed', '.git', '.DS_Store', '__pycache__']
 let g:NERDTreeShowHidden = 1
 
