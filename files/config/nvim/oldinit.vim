@@ -3,21 +3,21 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Theme
-Plug 'pgdouyon/vim-yin-yang'
+" Plug 'pgdouyon/vim-yin-yang'
 " Automatic syntax for a bunch of languages
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 " Syntax checking
-Plug 'vim-syntastic/syntastic'
+" Plug 'vim-syntastic/syntastic'
 " Detect editorconfig file
 Plug 'editorconfig/editorconfig-vim'
 " GitGutter
 Plug 'airblade/vim-gitgutter'
 " Automatic quote & brace completion
-Plug 'raimondi/delimitmate'
+" Plug 'raimondi/delimitmate'
 " Linting
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 " File tree explorer
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
 " Code comment helper
 Plug 'scrooloose/nerdcommenter'
 " Surrounding quote/brace helper
@@ -27,19 +27,28 @@ Plug 'tpope/vim-fugitive'
 " GitHub enhancement to fugitive
 Plug 'tpope/vim-rhubarb'
 " fzf fuzzy finder
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " fzf vim plugin
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf.vim'
 " Highlight matching tag
 Plug 'valloric/matchtagalways'
 " JavaScript
-Plug 'pangloss/vim-javascript'
+" Plug 'pangloss/vim-javascript'
 " Crystal
-Plug 'vim-crystal/vim-crystal'
+" Plug 'vim-crystal/vim-crystal'
 " IDE Junk
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-rls'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-rls'
+
+
+
+Plug 'kdheepak/monochrome.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'mhartington/formatter.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 " End plugins
@@ -51,13 +60,16 @@ if (has("nvim"))
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
 
+autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+
 " Begin config
 """"""""""""""
 syntax on
 set termguicolors
 " Theme
-set background=dark " Set to dark for a dark variant
-colorscheme yin
+" set background=dark " Set to dark for a dark variant
+" colorscheme yin
+colorscheme monochrome
 " Refresh every 100ms
 set updatetime=100
 " Show 80 col
@@ -125,15 +137,20 @@ set softtabstop=0 noexpandtab
 set shiftwidth=2
 set tabstop=4
 
-let g:syntastic_python_python_exec = "python3"
+nnoremap <leader>p <cmd>Telescope find_files<cr>
+nnoremap <leader>f <cmd>Telescope live_grep<cr>
+" nnoremap <leader>fb <cmd>Telescope buffers<cr>
+" nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-let g:syntastic_check_on_open = 1
-let g:syntastic_lua_checkers = ["luac", "luacheck"]
-let g:syntastic_lua_luacheck_args = "--no-unused-args"
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_python_python_exec = "python3"
+"
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_lua_checkers = ["luac", "luacheck"]
+" let g:syntastic_lua_luacheck_args = "--no-unused-args"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 0
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
 " Set the cursor back to a vertical bar on exit
 au VimLeave * set guicursor=a:ver1-blinkon1
@@ -157,41 +174,41 @@ command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 au BufWritePre * :FixWhitespace
 
 " Flow syntax
-let g:javascript_plugin_flow = 0
+" let g:javascript_plugin_flow = 0
 
-let g:ale_fixers = {}
-let g:ale_linters = {}
+" let g:ale_fixers = {}
+" let g:ale_linters = {}
 
 " \+p to autofix
-map <Leader>p <Plug>(ale_fix)
+" map <Leader>p <Plug>(ale_fix)
 
-let g:ale_fix_on_save = 1
+" let g:ale_fix_on_save = 1
 
 " NCM2 config
 " suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
-set shortmess+=c
+" set shortmess+=c
 " autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
+" set completeopt=noinsert,menuone,noselect
 " " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-inoremap <c-c> <ESC>
+" inoremap <c-c> <ESC>
 " " Use <TAB> to select the popup menu:
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-	  \ pumvisible() ? "\<C-n>" :
-	  \ <SID>check_back_space() ? "\<TAB>" :
-	  \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
 
 "Crystal
-let g:crystal_define_mappings = 0
-let g:crystal_auto_format = 1
+" let g:crystal_define_mappings = 0
+" let g:crystal_auto_format = 1
 
 " Hack for lua fix on save
 " function LuaFmt()
@@ -210,10 +227,10 @@ let g:crystal_auto_format = 1
 "     \ }
 
 " NERDTree
-map <C-n> :NERDTreeToggle<CR>
-map <leader>f :NERDTreeFind<CR>
-let g:NERDTreeIgnore = ['node_modules', 'tmp', 'flow-typed', '.git', '.DS_Store', '__pycache__']
-let g:NERDTreeShowHidden = 1
+" map <C-n> :NERDTreeToggle<CR>
+" map <leader>f :NERDTreeFind<CR>
+" let g:NERDTreeIgnore = ['node_modules', 'tmp', 'flow-typed', '.git', '.DS_Store', '__pycache__']
+" let g:NERDTreeShowHidden = 1
 
 " NERDCommenter
 " <leader>c<space> is the default NERDComToggleComment
@@ -228,24 +245,24 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " fzf keybinds
 " Fuzzy search for filenames with Ctrl+p
-noremap <C-p> :GitFiles<CR>
+" noremap <C-p> :GitFiles<CR>
 " Search for text in files with Ctrl+f
-noremap <C-f> :Rg<CR>
+" noremap <C-f> :Rg<CR>
 " Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
+" let g:fzf_buffers_jump = 1
 " Hide the > fzf status line
-autocmd! FileType fzf set laststatus=0 noshowmode noruler
-	  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+" autocmd! FileType fzf set laststatus=0 noshowmode noruler
+"       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 " Close the fzf buffer quicker when you hit esc
 " Some sort of nvim bug
 " See https://github.com/junegunn/fzf/issues/632
-if has('nvim')
-  aug fzf_setup
-	au!
-	au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
-  aug END
-end
+" if has('nvim')
+"   aug fzf_setup
+"     au!
+"     au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
+"   aug END
+" end
 
 " Tabs
 noremap <Leader>e :tabnew<CR>
@@ -273,9 +290,9 @@ let g:mta_filetypes = {
 	  \ 'jinja' : 1,
 	  \}
 
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-	  \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-	  \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+" map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+"       \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+"       \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " hi CocErrorFloat guifg=white
 " highlight Pmenu guibg=gray guifg=white
@@ -324,12 +341,12 @@ hi TabLineFill guifg=#1c1c1c guibg=#262626
 hi TabLine guifg=Grey35 guibg=none cterm=none gui=none
 hi TabLineSel guifg=Grey60 guibg=none
 
-autocmd ColorScheme *
-	  \ hi CocErrorSign  ctermfg=Red guifg=#ff0000 |
-	  \ hi CocWarningSign  ctermfg=Brown guifg=#ff922b |
-	  \ hi CocInfoSign  ctermfg=Yellow guifg=#fab005 |
-	  \ hi CocHintSign  ctermfg=Blue guifg=#15aabf |
-	  \ hi CocUnderline  cterm=underline gui=underline
+" autocmd ColorScheme *
+"       \ hi CocErrorSign  ctermfg=Red guifg=#ff0000 |
+"       \ hi CocWarningSign  ctermfg=Brown guifg=#ff922b |
+"       \ hi CocInfoSign  ctermfg=Yellow guifg=#fab005 |
+"       \ hi CocHintSign  ctermfg=Blue guifg=#15aabf |
+"       \ hi CocUnderline  cterm=underline gui=underline
 
 """" coc settings
 " TextEdit might fail if hidden is not set.
@@ -338,27 +355,27 @@ set hidden
 set nobackup
 set nowritebackup
 " GoTo code navigation.
-nmap <silent> gtd <Plug>(coc-definition)
-nmap <silent> gtt <Plug>(coc-type-definition)
-nmap <silent> gti <Plug>(coc-implementation)
-nmap <silent> gtr <Plug>(coc-references)
+" nmap <silent> gtd <Plug>(coc-definition)
+" nmap <silent> gtt <Plug>(coc-type-definition)
+" nmap <silent> gti <Plug>(coc-implementation)
+" nmap <silent> gtr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-	execute 'h '.expand('<cword>')
-  else
-	call CocAction('doHover')
-  endif
-endfunction
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   else
+"     call CocAction('doHover')
+"   endif
+" endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+" nmap <leader>rn <Plug>(coc-rename)
 """" coc settings
 
 " Set last because something is resetting it
