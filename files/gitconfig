@@ -3,7 +3,7 @@
 	email = hey@danreev.es
 
 [core]
-	excludesfile = /Users/danreeves/.gitignore_global
+	excludesfile = /Users/dan.reeves/.gitignore_global
 
 [tag]
 	sort = version:refname

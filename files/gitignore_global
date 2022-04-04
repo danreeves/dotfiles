@@ -23,3 +23,6 @@ TAGS
 
 # py
 __pycache__
+
+## asdf
+.tool-versions
