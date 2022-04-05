@@ -6,3 +6,5 @@ dirty=$([[ $gitstatus == "?? 0" || $gitstatus == "" ]] && echo "" || echo " *")
 if [[ $branch != "" ]]; then
   echo " | ${branch:0:8}$dirty";
 fi
+
+tmux rename-session "${PWD##*/}"
