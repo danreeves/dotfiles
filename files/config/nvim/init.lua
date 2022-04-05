@@ -14,6 +14,7 @@ require("packer").startup(function()
 		"nvim-telescope/telescope.nvim",
 		requires = { { "nvim-lua/plenary.nvim" } },
 	})
+	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 	use("editorconfig/editorconfig-vim")
 	use("airblade/vim-gitgutter")
 	use("scrooloose/nerdcommenter")
@@ -182,6 +183,8 @@ for _, lsp in pairs(servers) do
 		},
 	})
 end
+
+require("telescope").load_extension("fzf")
 
 require("formatter").setup({
 	filetype = {
