@@ -138,12 +138,12 @@ for file in ~/.config/localconfig/*(N); do
   source "$file"
 done
 
-
 ### source asdf vm manager
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 [ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
 
-export PATH="/usr/local/opt/awscli@1/bin:$PATH"
+[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && \
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 func w () {
   yarn workspace @treasure-data/$@

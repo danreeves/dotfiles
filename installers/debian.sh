@@ -19,7 +19,10 @@ sudo apt-get install -y \
   python-pip \
   python3-pip \
   iputils-ping \
-  tmux
+  tmux \
+  neovim \ 
+  python-neovim \
+  python3-neovim
 
 echo "Installing git-town"
 curl --silent -L "https://github.com/git-town/git-town/releases/download/v7.3.0/git-town-amd64.deb" -o git-town.deb
@@ -37,21 +40,6 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosugges
 
 echo "Installing zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
-
-echo "Installing neovim"
-curl --silent -L \
-  "https://github.com/neovim/neovim/releases/download/$(get_latest_release neovim/neovim)/nvim.appimage" \
-	-o nvim.appimage \
-	&& chmod u+x ./nvim.appimage \
-	&& ./nvim.appimage --appimage-extract \
-	&& sudo rm -rf /opt/nvim \
-	&& sudo mv ./squashfs-root /opt/nvim \
-	&& sudo ln -s /opt/nvim/usr/bin/nvim /usr/local/bin/nvim || true \
-	&& rm ./nvim.appimage
-
-echo "Installing python for neovim"
-pip2 install --user neovim
-pip3 install --user neovim
 
 echo "Installing vim-plug"
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
