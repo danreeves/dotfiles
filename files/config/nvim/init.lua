@@ -35,6 +35,7 @@ require("packer").startup(function()
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-cmdline")
 	use("hrsh7th/nvim-cmp")
+	use("L3MON4D3/LuaSnip")
 end)
 
 vim.g.monochrome_style = "photon"
@@ -173,7 +174,10 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "eslint", "tsserver" }
+local servers = {
+	"eslint",
+	"tsserver",
+}
 for _, lsp in pairs(servers) do
 	require("lspconfig")[lsp].setup({
 		on_attach = on_attach,
@@ -396,6 +400,7 @@ augroup END
 )
 
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 local has_words_before = function()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -404,42 +409,28 @@ end
 
 cmp.setup({
 	snippet = {
-		-- We recommend using *actual* snippet engine.
-		-- It's a simple implementation so it might not work in some of the cases.
 		expand = function(args)
-			local line_num, col = unpack(vim.api.nvim_win_get_cursor(0))
-			local line_text = vim.api.nvim_buf_get_lines(0, line_num - 1, line_num, true)[1]
-			local indent = string.match(line_text, "^%s*")
-			local replace = vim.split(args.body, "\n", true)
-			local surround = string.match(line_text, "%S.*") or ""
-			local surround_end = surround:sub(col)
-
-			replace[1] = surround:sub(0, col - 1) .. replace[1]
-			replace[#replace] = replace[#replace] .. (#surround_end > 1 and " " or "") .. surround_end
-			if indent ~= "" then
-				for i, line in ipairs(replace) do
-					replace[i] = indent .. line
-				end
-			end
-
-			vim.api.nvim_buf_set_lines(0, line_num - 1, line_num, true, replace)
+			luasnip.lsp_expand(args.body)
 		end,
 	},
 	mapping = {
 		-- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
-		["<Tab>"] = function(fallback)
-			if not cmp.select_next_item() then
-				if vim.bo.buftype ~= "prompt" and has_words_before() then
-					cmp.complete()
-				else
-					fallback()
-				end
+		["<Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_next_item()
+			elseif luasnip.expand_or_jumpable() then
+				luasnip.expand_or_jump()
+			elseif has_words_before() then
+				cmp.complete()
+			else
+				fallback()
 			end
-		end,
+		end, { "i", "s" }),
 	},
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
+		{ name = "luasnip" },
 		{ name = "buffer" },
 		{ name = "path" },
 	}),
@@ -458,34 +449,34 @@ hi VertSplit guibg=#262626
 set fillchars+=vert:\ 
 
 function! Tabline()
-let s = ''
-for i in range(tabpagenr('$'))
-	let tab = i + 1
-	let winnr = tabpagewinnr(tab)
-	let buflist = tabpagebuflist(tab)
-	let bufnr = buflist[winnr - 1]
-	let bufname = bufname(bufnr)
-	let bufmodified = getbufvar(bufnr, "&mod")
+	let s = ''
+	for i in range(tabpagenr('$'))
+		let tab = i + 1
+		let winnr = tabpagewinnr(tab)
+		let buflist = tabpagebuflist(tab)
+		let bufnr = buflist[winnr - 1]
+		let bufname = bufname(bufnr)
+		let bufmodified = getbufvar(bufnr, "&mod")
 
-	let s .= '%' . tab . 'T'
-	let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-	let s .= (bufname != '' ? '[ ' . tab .': ' . fnamemodify(bufname, ':t') : '[ ' . tab .': No Name')
+		let s .= '%' . tab . 'T'
+		let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+		let s .= (bufname != '' ? '[ ' . tab .': ' . fnamemodify(bufname, ':t') : '[ ' . tab .': No Name')
 
-	if bufmodified
-		let s .= ' + ]'
-	else
-		let s .= ' ]'
+		if bufmodified
+			let s .= ' + ]'
+		else
+			let s .= ' ]'
 		endif
-		endfor
+	endfor
 
-		let s .= '%#TabLineFill#'
-		if (exists("g:tablineclosebutton"))
-			let s .= '%=%999XX'
-			endif
-			return s
-			endfunction
-			set tabline=%!Tabline()
-			]])
+	let s .= '%#TabLineFill#'
+	if (exists("g:tablineclosebutton"))
+		let s .= '%=%999XX'
+	endif
+	return s
+endfunction
+set tabline=%!Tabline()
+]])
 
 vim.opt.hidden = true
 vim.opt.backup = false
