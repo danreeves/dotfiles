@@ -172,8 +172,40 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gtD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gtd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+	if client.resolved_capabilities.document_highlight then
+		vim.cmd([[
+		  hi! LspReferenceRead cterm=underline gui=underline
+		  hi! LspReferenceText cterm=underline gui=underline
+		  hi! LspReferenceWrite cterm=underline gui=underline
+		  augroup lsp_document_highlight
+			autocmd! * <buffer>
+			autocmd! CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+			autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+		  augroup END
+		]])
+	end
 end
+
+vim.cmd([[autocmd! ColorScheme * highlight NormalFloat]])
+vim.cmd([[autocmd! ColorScheme * highlight FloatBorder guifg=white]])
+
+local border = {
+	{ "🭽", "FloatBorder" },
+	{ "▔", "FloatBorder" },
+	{ "🭾", "FloatBorder" },
+	{ "▕", "FloatBorder" },
+	{ "🭿", "FloatBorder" },
+	{ "▁", "FloatBorder" },
+	{ "🭼", "FloatBorder" },
+	{ "▏", "FloatBorder" },
+}
+
+-- LSP settings (for overriding per client)
+local handlers = {
+	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+}
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -184,6 +216,7 @@ local servers = {
 for _, lsp in pairs(servers) do
 	require("lspconfig")[lsp].setup({
 		on_attach = on_attach,
+		handlers = handlers,
 		flags = {
 			-- This will be the default in neovim 0.7+
 			debounce_text_changes = 150,
@@ -303,6 +336,7 @@ require("neo-tree").setup({
 	popup_border_style = "rounded",
 	enable_git_status = true,
 	enable_diagnostics = false,
+	use_popups_for_input = false,
 	default_component_configs = {
 		indent = {
 			indent_size = 2,
