@@ -50,8 +50,6 @@ syntax on
 " Turn on filetype plugins
 filetype plugin on
 
-" Eslint fix on save
-autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 
 " Set the cursor back to a vertical bar on exit
 autocmd VimLeave * set guicursor=a:ver1-blinkon1
@@ -433,8 +431,9 @@ require("neo-tree").setup({
 vim.api.nvim_exec(
 	[[
 augroup FormatAutogroup
-autocmd!
-autocmd BufWritePost *.js,*.ts,*.tsx,*.rs,*.lua FormatWrite
+	autocmd!
+	autocmd BufWritePost *.js,*.ts,*.tsx,*.rs,*.lua FormatWrite
+	autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js lua vim.lsp.buf.formatting()
 augroup END
 ]],
 	true
