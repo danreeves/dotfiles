@@ -267,28 +267,31 @@ require("telescope").setup({
 require("formatter").setup({
 	filetype = {
 		javascript = {
+			-- prettierd
 			function()
 				return {
-					exe = "prettier",
-					args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
+					exe = "prettierd",
+					args = { vim.api.nvim_buf_get_name(0) },
 					stdin = true,
 				}
 			end,
 		},
 		typescript = {
+			-- prettierd
 			function()
 				return {
-					exe = "prettier",
-					args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
+					exe = "prettierd",
+					args = { vim.api.nvim_buf_get_name(0) },
 					stdin = true,
 				}
 			end,
 		},
 		typescriptreact = {
+			-- prettierd
 			function()
 				return {
-					exe = "prettier",
-					args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
+					exe = "prettierd",
+					args = { vim.api.nvim_buf_get_name(0) },
 					stdin = true,
 				}
 			end,
@@ -303,10 +306,11 @@ require("formatter").setup({
 			end,
 		},
 		json = {
+			-- prettierd
 			function()
 				return {
-					exe = "prettier",
-					args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
+					exe = "prettierd",
+					args = { vim.api.nvim_buf_get_name(0) },
 					stdin = true,
 				}
 			end,
@@ -432,8 +436,9 @@ vim.api.nvim_exec(
 	[[
 augroup FormatAutogroup
 	autocmd!
-	autocmd BufWritePost *.js,*.ts,*.tsx,*.rs,*.lua FormatWrite
-	autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js lua vim.lsp.buf.formatting()
+	"autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js lua vim.lsp.buf.formatting()
+	autocmd BufWritePost *.js,*.ts,*.tsx,*.json,*.rs,*.lua FormatWrite
+	"autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 augroup END
 ]],
 	true
