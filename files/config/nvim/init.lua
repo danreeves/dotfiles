@@ -9,7 +9,6 @@ require("packer").startup(function()
 	})
 	use({ "nvim-treesitter/nvim-treesitter", config = "vim.cmd[[TSUpdate]]" })
 	use("neovim/nvim-lspconfig")
-	use("mhartington/formatter.nvim")
 	use({
 		"nvim-telescope/telescope.nvim",
 		requires = {
@@ -39,6 +38,7 @@ require("packer").startup(function()
 	use("hrsh7th/nvim-cmp")
 	use("L3MON4D3/LuaSnip")
 	use("wesQ3/vim-windowswap")
+	use("jose-elias-alvarez/null-ls.nvim")
 end)
 
 vim.g.monochrome_style = "photon"
@@ -208,49 +208,45 @@ local handlers = {
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = {
-	"eslint",
+	-- "eslint",
 	"tsserver",
 }
 for _, lsp in pairs(servers) do
 	require("lspconfig")[lsp].setup({
 		on_attach = on_attach,
 		handlers = handlers,
-		flags = {
-			-- This will be the default in neovim 0.7+
-			debounce_text_changes = 150,
-		},
 	})
 end
 
-local runtime_path = vim.split(package.path, ";")
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
+-- local runtime_path = vim.split(package.path, ";")
+-- table.insert(runtime_path, "lua/?.lua")
+-- table.insert(runtime_path, "lua/?/init.lua")
 
-require("lspconfig").sumneko_lua.setup({
-	settings = {
-		Lua = {
-			single_file_support = true,
-			runtime = {
-				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-				version = "LuaJIT",
-				-- Setup your lua path
-				path = runtime_path,
-			},
-			diagnostics = {
-				-- Get the language server to recognize the `vim` global
-				globals = { "vim" },
-			},
-			workspace = {
-				-- Make the server aware of Neovim runtime files
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-			-- Do not send telemetry data containing a randomized but unique identifier
-			telemetry = {
-				enable = false,
-			},
-		},
-	},
-})
+-- require("lspconfig").sumneko_lua.setup({
+--     settings = {
+--         Lua = {
+--             single_file_support = true,
+--             runtime = {
+-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+-- version = "LuaJIT",
+-- Setup your lua path
+-- path = runtime_path,
+-- },
+-- diagnostics = {
+-- Get the language server to recognize the `vim` global
+-- globals = { "vim" },
+-- },
+-- workspace = {
+-- Make the server aware of Neovim runtime files
+-- library = vim.api.nvim_get_runtime_file("", true),
+-- },
+-- Do not send telemetry data containing a randomized but unique identifier
+--             telemetry = {
+--                 enable = false,
+--             },
+--         },
+--     },
+-- })
 
 require("telescope").load_extension("fzf")
 local actions = require("telescope.actions")
@@ -264,76 +260,36 @@ require("telescope").setup({
 	},
 })
 
-require("formatter").setup({
-	filetype = {
-		javascript = {
-			-- prettierd
-			function()
-				return {
-					exe = "prettierd",
-					args = { vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end,
-		},
-		typescript = {
-			-- prettierd
-			function()
-				return {
-					exe = "prettierd",
-					args = { vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end,
-		},
-		typescriptreact = {
-			-- prettierd
-			function()
-				return {
-					exe = "prettierd",
-					args = { vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end,
-		},
-		rust = {
-			function()
-				return {
-					exe = "rustfmt",
-					args = { "--emit=stdout", "--edition=2021" },
-					stdin = true,
-				}
-			end,
-		},
-		json = {
-			-- prettierd
-			function()
-				return {
-					exe = "prettierd",
-					args = { vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end,
-		},
-		lua = {
-			-- sytlua
-			function()
-				return {
-					exe = "stylua",
-					stdin = false,
-				}
-			end,
-		},
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local null_ls = require("null-ls")
+null_ls.setup({
+	sources = {
+		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.prettier,
+		null_ls.builtins.formatting.rustfmt,
+		null_ls.builtins.formatting.crystal_format,
 	},
+	on_attach = function(client, bufnr)
+		if client.supports_method("textDocument/formatting") then
+			vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = augroup,
+				buffer = bufnr,
+				callback = function()
+					-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+					vim.lsp.buf.formatting_seq_sync(nil, 10000)
+				end,
+			})
+		end
+	end,
 })
 
 -- Unless you are still migrating, remove the deprecated commands from v1.x
-vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
+vim.cmd([[
+	let g:neo_tree_remove_legacy_commands = 1
+]])
 
 require("neo-tree").setup({
-	filesystem = {
-		async_directory_scan = false,
-	},
 	close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
 	popup_border_style = "rounded",
 	enable_git_status = true,
@@ -416,6 +372,7 @@ require("neo-tree").setup({
 			hide_by_name = {},
 			never_show = {},
 		},
+		async_directory_scan = false,
 		follow_current_file = true,
 		hijack_netrw_behavior = "disabled",
 		use_libuv_file_watcher = false,
@@ -431,18 +388,6 @@ require("neo-tree").setup({
 		},
 	},
 })
-
-vim.api.nvim_exec(
-	[[
-augroup FormatAutogroup
-	autocmd!
-	"autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js lua vim.lsp.buf.formatting()
-	autocmd BufWritePost *.js,*.ts,*.tsx,*.json,*.rs,*.lua FormatWrite
-	"autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
-augroup END
-]],
-	true
-)
 
 local cmp = require("cmp")
 local luasnip = require("luasnip")
