@@ -1,5 +1,5 @@
 luaJIT 2.0.5--2.4.4
-nodejs 14.6.0
+nodejs 16.15.0
 crystal 1.0.0
 ruby 2.7.2
 wren-cli 0.3.0
