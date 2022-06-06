@@ -15,7 +15,7 @@ Thumbs.db
 # Ctags files
 .tags
 .gems.tags
-tags
+# tags
 # TAGS ### lolwat broke a path with Tags in
 
 # nvim config
