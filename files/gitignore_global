@@ -16,7 +16,7 @@ Thumbs.db
 .tags
 .gems.tags
 tags
-TAGS
+# TAGS ### lolwat broke a path with Tags in
 
 # nvim config
 .nvimrc
