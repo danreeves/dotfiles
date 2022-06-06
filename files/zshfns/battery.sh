@@ -17,5 +17,5 @@ CHARGE="" && [[ "$charging" != "" ]] && CHARGE="⌁"
 
 if [ "$percent" != "100%" ];
 then
-	echo "|$CHARGE$percent$CHARGE| "
+	echo "battery: $CHARGE$percent$CHARGE | "
 fi
