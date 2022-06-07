@@ -45,30 +45,30 @@ vim.g.monochrome_style = "photon"
 vim.cmd("colorscheme monochrome")
 
 vim.cmd([[
-" Turn on syntax
-syntax on
-" Turn on filetype plugins
-filetype plugin on
+	" Turn on syntax
+	syntax on
+	" Turn on filetype plugins
+	filetype plugin on
 
 
-" Set the cursor back to a vertical bar on exit
-autocmd VimLeave * set guicursor=a:ver1-blinkon1
+	" Set the cursor back to a vertical bar on exit
+	autocmd VimLeave * set guicursor=a:ver1-blinkon1
 
-" Try to autoload files that have changed on the file system
-autocmd BufEnter,FocusGained * checktime
+	" Try to autoload files that have changed on the file system
+	autocmd BufEnter,FocusGained * checktime
 
-" FixWhitespace function taken from bronson/vim-trailing-whitespace
-function! s:FixWhitespace(line1,line2)
-let l:save_cursor = getpos(".")
-silent! execute ':' . a:line1 . ',' . a:line2 . 's/\\\@<!\s\+$//'
-call setpos('.', l:save_cursor)
-endfunction
+	" FixWhitespace function taken from bronson/vim-trailing-whitespace
+	function! s:FixWhitespace(line1,line2)
+		let l:save_cursor = getpos(".")
+		silent! execute ':' . a:line1 . ',' . a:line2 . 's/\\\@<!\s\+$//'
+		call setpos('.', l:save_cursor)
+	endfunction
 
-" Run :FixWhitespace to remove end of line white space
-command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
+	" Run :FixWhitespace to remove end of line white space
+	command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 
-" Fix whitespace on save
-au BufWritePre * :FixWhitespace
+	" Fix whitespace on save
+	au BufWritePre * :FixWhitespace
 ]])
 
 vim.opt.updatetime = 100
