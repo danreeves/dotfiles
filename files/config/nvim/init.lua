@@ -434,8 +434,12 @@ set statusline+=%{&readonly?\"\ [Read\ Only]\":\"\"}
 set statusline+=%=
 set statusline+=%{FugitiveHead()}
 
-hi StatusLine guibg=#262626
-hi VertSplit guibg=#262626
+hi StatusLine guibg=NONE guifg=#8a8a8a ctermfg=245
+hi VertSplit guibg=NONE
+
+hi TabLine    gui=NONE guibg=NONE guifg=#585858 ctermfg=240
+hi TabLineSel    gui=NONE guibg=NONE guifg=#bcbcbc ctermfg=250
+
 set fillchars+=vert:\ 
 
 function! Tabline()
