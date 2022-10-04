@@ -164,6 +164,9 @@ defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 # Prevent wiggle mouse getting bigger
 defaults write ~/Library/Preferences/.GlobalPreferences CGDisableCursorLocationMagnification -bool YES
 
+# Map CapsLock to Esc
+hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc": 0x700000039, "HIDKeyboardModifierMappingDst": 0x700000029}]}'
+
 ####                ####
 ### Activity Monitor ###
 ####                ####
