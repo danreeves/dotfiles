@@ -2,10 +2,6 @@ require("packer").startup(function()
 	use("wbthomason/packer.nvim")
 	use({
 		"kdheepak/monochrome.nvim",
-		config = function()
-			vim.g.monochrome_style = "photon"
-			vim.cmd("colorscheme monochrome")
-		end,
 	})
 	use({ "nvim-treesitter/nvim-treesitter", config = "vim.cmd[[TSUpdate]]" })
 	use("neovim/nvim-lspconfig")
@@ -41,7 +37,8 @@ require("packer").startup(function()
 	use("jose-elias-alvarez/null-ls.nvim")
 end)
 
-vim.g.monochrome_style = "photon"
+vim.o.background = "light"
+vim.g.monochrome_style = "amplified"
 vim.cmd("colorscheme monochrome")
 
 vim.cmd([[
@@ -290,7 +287,7 @@ vim.cmd([[
 ]])
 
 require("neo-tree").setup({
-	close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+	close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
 	popup_border_style = "rounded",
 	enable_git_status = true,
 	enable_diagnostics = false,
@@ -318,19 +315,19 @@ require("neo-tree").setup({
 		},
 		modified = {
 			symbol = "+",
-			highlight = "NeoTreeModified",
+			-- highlight = "NeoTreeModified",
 		},
 		name = {
-			trailing_slash = false,
-			use_git_status_colors = true,
+			trailing_slash = true,
+			use_git_status_colors = false,
 		},
 		git_status = {
 			symbols = {
 				-- Change type
-				added = "",
-				modified = "",
-				deleted = "",
-				renamed = "",
+				added = "+",
+				modified = "~",
+				deleted = "-",
+				renamed = "~",
 				-- Status type
 				untracked = "",
 				ignored = "",
