@@ -18,7 +18,6 @@ require("packer").startup(function()
 	use("tpope/vim-surround")
 	use("tpope/vim-fugitive")
 	use("tpope/vim-rhubarb")
-	use("valloric/matchtagalways")
 	use({
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v2.x",
@@ -101,6 +100,7 @@ vim.opt.mouse = "a"
 
 require("nvim-treesitter.configs").setup({
 	ensure_installed = "all",
+	ignore_install = { "phpdoc" },
 	sync_install = false,
 	highlight = {
 		enable = true,
@@ -129,18 +129,6 @@ vim.cmd([[
 cnoreabbrev gh GBrowse
 ]])
 
-vim.g.mta_filetypes = {
-	["javascript.jsx"] = 1,
-	javascript = 1,
-	typescript = 1,
-	typescriptreact = 1,
-	html = 1,
-	xhtml = 1,
-	xml = 1,
-	jinja = 1,
-	lua = 1,
-}
-
 vim.cmd([[
 map <C-_> <leader>c<space>
 map <C-\> <leader>c<space>
@@ -168,7 +156,7 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gtd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-	if client.resolved_capabilities.document_highlight then
+	if client.server_capabilities.document_highlight then
 		vim.cmd([[
 		  hi! LspReferenceRead cterm=underline gui=underline
 		  hi! LspReferenceText cterm=underline gui=underline
@@ -262,6 +250,7 @@ local null_ls = require("null-ls")
 null_ls.setup({
 	sources = {
 		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.eslint_d,
 		null_ls.builtins.formatting.prettier,
 		null_ls.builtins.formatting.rustfmt,
 		null_ls.builtins.formatting.crystal_format,

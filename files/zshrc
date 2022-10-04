@@ -29,8 +29,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/opt/go/bin:$PATH"
 export GOPATH="$HOME/go"
 ### Luarocks path
-export PATH="$HOME/.luarocks/bin:$PATH"
-export PATH="/home/rain/.asdf/installs/luaJIT/2.0.5--2.4.4/bin:$PATH"
+# export PATH="$HOME/.luarocks/bin:$PATH"
+# export PATH="/home/rain/.asdf/installs/luaJIT/2.0.5--2.4.4/bin:$PATH"
 
 ### history file config
 HISTFILE=~/.zsh_history
@@ -140,7 +140,8 @@ done
 
 ### source asdf vm manager
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
-[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
+[ -f $(brew --prefix asdf)/libexec/asdf.sh ] && source $(brew --prefix asdf)/libexec/asdf.sh
+
 
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && \
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

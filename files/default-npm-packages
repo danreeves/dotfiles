@@ -1,4 +1,6 @@
 # npm i -g managed by asdf
 
 typescript-language-server
+vscode-langservers-extracted
+eslint_d
 trash-cli

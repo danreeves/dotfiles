@@ -46,12 +46,16 @@
 	<real>1.004032258064516</real>
 	<key>ProfileCurrentVersion</key>
 	<real>2.0699999999999998</real>
+	<key>ShouldRestoreContent</key>
+	<false/>
 	<key>TerminalType</key>
 	<string>xterm-256colour</string>
 	<key>UseBrightBold</key>
 	<false/>
 	<key>name</key>
 	<string>termprofile</string>
+	<key>shellExitAction</key>
+	<integer>1</integer>
 	<key>type</key>
 	<string>Window Settings</string>
 </dict>
