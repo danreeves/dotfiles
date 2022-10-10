@@ -39,15 +39,15 @@ end)
 
 vim.o.background = "light"
 
-require('nightfox').setup({
-  options = {
-    transparent = true,    -- Disable setting background
-    terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-    dim_inactive = false,   -- Non focused panes set to alternative background
-  },
-  palettes = {},
-  specs = {},
-  groups = {},
+require("nightfox").setup({
+	options = {
+		transparent = true, -- Disable setting background
+		terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+		dim_inactive = false, -- Non focused panes set to alternative background
+	},
+	palettes = {},
+	specs = {},
+	groups = {},
 })
 
 vim.cmd("colorscheme dayfox")
@@ -432,12 +432,9 @@ set statusline+=%{&readonly?\"\ [Read\ Only]\":\"\"}
 set statusline+=%=
 set statusline+=%{FugitiveHead()}
 
-" hi StatusLine guibg=NONE guifg=#8a8a8a ctermfg=245
-" hi VertSplit guibg=NONE
-
-hi TabLine    gui=NONE guibg=NONE
-hi TabLineSel    gui=NONE guibg=NONE cterm=NONE ctermfg=NONE
-hi TabLineFill gui=NONE guibg=NONE
+hi TabLineFill guifg=None guibg=None
+hi TabLine guifg=DarkGrey guibg=None
+hi TabLineSel guifg=Default guibg=None
 
 set fillchars+=vert:\ 
 
