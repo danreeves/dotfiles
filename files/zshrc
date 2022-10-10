@@ -16,6 +16,16 @@ fi
 # echo -e "\033]6;1;bg;blue;brightness;52\a"
 # clear
 
+# Set PATH, MANPATH, etc., for Homebrew.
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && \
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+### source asdf vm manager
+[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
+[ -f $(brew --prefix asdf)/libexec/asdf.sh ] && source $(brew --prefix asdf)/libexec/asdf.sh
+
 ### Custom bins
 export PATH="$HOME/bin:$PATH"
 ### Debian path
@@ -60,19 +70,6 @@ alias cl='clear'
 alias ls='ls -GFh'
 alias diff='git diff --no-index'
 
-### jump to recently used items
-eval "$(fasd --init zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
-function fasd_cd() {
-  if [ $# -le 1 ]; then
-    fasd "$@"
-  else
-    local _fasd_ret="$(fasd -e 'printf %s' "$@")"
-    [ -z "$_fasd_ret" ] && return
-    [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
-  fi
-}
-alias z='fasd_cd -d' # cd, same functionality as j in autojump
-
 ### Sublime
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 
@@ -97,6 +94,20 @@ function v () {
 function zv () {
     v $(fasd -e 'printf %s' "$@");
 }
+
+### jump to recently used items
+eval "$(fasd --init zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+function fasd_cd() {
+  if [ $# -le 1 ]; then
+    fasd "$@"
+  else
+    local _fasd_ret="$(fasd -e 'printf %s' "$@")"
+    [ -z "$_fasd_ret" ] && return
+    [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
+  fi
+}
+alias z='fasd_cd -d' # cd, same functionality as j in autojump
+
 
 ### git
 alias gaa='git add -A'
@@ -138,14 +149,6 @@ for file in ~/.config/localconfig/*(N); do
   source "$file"
 done
 
-### source asdf vm manager
-[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
-[ -f $(brew --prefix asdf)/libexec/asdf.sh ] && source $(brew --prefix asdf)/libexec/asdf.sh
-
-
-[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && \
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
 func w () {
   yarn workspace @treasure-data/$@
 };
@@ -160,5 +163,3 @@ func w () {
 # Bun
 export BUN_INSTALL="~/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-# Set PATH, MANPATH, etc., for Homebrew.
-eval "$(/opt/homebrew/bin/brew shellenv)"

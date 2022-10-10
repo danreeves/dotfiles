@@ -3,6 +3,7 @@ require("packer").startup(function()
 	use({
 		"kdheepak/monochrome.nvim",
 	})
+	use("EdenEast/nightfox.nvim")
 	use({ "nvim-treesitter/nvim-treesitter", config = "vim.cmd[[TSUpdate]]" })
 	use("neovim/nvim-lspconfig")
 	use({
@@ -37,8 +38,19 @@ require("packer").startup(function()
 end)
 
 vim.o.background = "light"
-vim.g.monochrome_style = "amplified"
-vim.cmd("colorscheme monochrome")
+
+require('nightfox').setup({
+  options = {
+    transparent = true,    -- Disable setting background
+    terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+    dim_inactive = false,   -- Non focused panes set to alternative background
+  },
+  palettes = {},
+  specs = {},
+  groups = {},
+})
+
+vim.cmd("colorscheme dayfox")
 
 vim.cmd([[
 	" Turn on syntax
@@ -420,11 +432,12 @@ set statusline+=%{&readonly?\"\ [Read\ Only]\":\"\"}
 set statusline+=%=
 set statusline+=%{FugitiveHead()}
 
-hi StatusLine guibg=NONE guifg=#8a8a8a ctermfg=245
-hi VertSplit guibg=NONE
+" hi StatusLine guibg=NONE guifg=#8a8a8a ctermfg=245
+" hi VertSplit guibg=NONE
 
-hi TabLine    gui=NONE guibg=NONE guifg=#585858 ctermfg=240
-hi TabLineSel    gui=NONE guibg=NONE guifg=#bcbcbc ctermfg=250
+hi TabLine    gui=NONE guibg=NONE
+hi TabLineSel    gui=NONE guibg=NONE cterm=NONE ctermfg=NONE
+hi TabLineFill gui=NONE guibg=NONE
 
 set fillchars+=vert:\ 
 
