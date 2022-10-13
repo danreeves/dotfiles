@@ -4,6 +4,8 @@ require("packer").startup(function()
 		"kdheepak/monochrome.nvim",
 	})
 	use("EdenEast/nightfox.nvim")
+	use("pbrisbin/vim-colors-off")
+	use("wuelnerdotexe/vim-enfocado")
 	use({ "nvim-treesitter/nvim-treesitter", config = "vim.cmd[[TSUpdate]]" })
 	use("neovim/nvim-lspconfig")
 	use({
@@ -50,13 +52,17 @@ require("nightfox").setup({
 	groups = {},
 })
 
-vim.cmd("colorscheme dayfox")
+-- vim.cmd("colorscheme off")
+-- vim.cmd("colorscheme dayfox")
+vim.cmd("colorscheme enfocado")
 
 vim.cmd([[
 	" Turn on syntax
 	syntax on
 	" Turn on filetype plugins
 	filetype plugin on
+
+	let g:enfocado_style = 'nature' " Available: `nature` or `neon`.
 
 
 	" Set the cursor back to a vertical bar on exit
