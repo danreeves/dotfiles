@@ -1,11 +1,6 @@
 require("packer").startup(function()
 	use("wbthomason/packer.nvim")
-	use({
-		"kdheepak/monochrome.nvim",
-	})
-	use("EdenEast/nightfox.nvim")
-	use("pbrisbin/vim-colors-off")
-	use("wuelnerdotexe/vim-enfocado")
+	use("axvr/photon.vim")
 	use({ "nvim-treesitter/nvim-treesitter", config = "vim.cmd[[TSUpdate]]" })
 	use("neovim/nvim-lspconfig")
 	use({
@@ -41,29 +36,14 @@ end)
 
 vim.o.background = "light"
 
-require("nightfox").setup({
-	options = {
-		transparent = true, -- Disable setting background
-		terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-		dim_inactive = false, -- Non focused panes set to alternative background
-	},
-	palettes = {},
-	specs = {},
-	groups = {},
-})
-
--- vim.cmd("colorscheme off")
--- vim.cmd("colorscheme dayfox")
-vim.cmd("colorscheme enfocado")
-
 vim.cmd([[
+set termguicolors
 	" Turn on syntax
 	syntax on
 	" Turn on filetype plugins
 	filetype plugin on
 
-	let g:enfocado_style = 'nature' " Available: `nature` or `neon`.
-
+	colorcolumn antiphoton
 
 	" Set the cursor back to a vertical bar on exit
 	autocmd VimLeave * set guicursor=a:ver1-blinkon1
@@ -86,7 +66,7 @@ vim.cmd([[
 ]])
 
 vim.opt.updatetime = 100
-vim.opt.colorcolumn = "80"
+-- vim.opt.colorcolumn = "80"
 vim.opt.number = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -113,7 +93,7 @@ vim.opt.showcmd = true
 vim.opt.smartcase = true
 vim.opt.wildmenu = true
 vim.opt.wildmode = { "longest", "list", "full" }
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.opt.mouse = "a"
 
 require("nvim-treesitter.configs").setup({
