@@ -43,7 +43,7 @@ set termguicolors
 	" Turn on filetype plugins
 	filetype plugin on
 
-	colorcolumn antiphoton
+	colorscheme antiphoton
 
 	" Set the cursor back to a vertical bar on exit
 	autocmd VimLeave * set guicursor=a:ver1-blinkon1
