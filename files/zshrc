@@ -110,6 +110,11 @@ function fasd_cd() {
 }
 alias z='fasd_cd -d' # cd, same functionality as j in autojump
 
+function trash() {
+  echo "[x] moving files to trash..."
+  mv "$@" "$HOME/.trash"
+}
+
 
 ### git
 alias gaa='git add -A'

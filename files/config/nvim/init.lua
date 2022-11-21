@@ -1,7 +1,7 @@
 require("packer").startup(function()
 	use("wbthomason/packer.nvim")
 	use("axvr/photon.vim")
-	use({ "nvim-treesitter/nvim-treesitter", config = "vim.cmd[[TSUpdate]]" })
+	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
 	use("neovim/nvim-lspconfig")
 	use({
 		"nvim-telescope/telescope.nvim",
@@ -12,7 +12,6 @@ require("packer").startup(function()
 	})
 	use("editorconfig/editorconfig-vim")
 	use("airblade/vim-gitgutter")
-	use("scrooloose/nerdcommenter")
 	use("tpope/vim-surround")
 	use("tpope/vim-fugitive")
 	use("tpope/vim-rhubarb")
@@ -32,37 +31,39 @@ require("packer").startup(function()
 	use("L3MON4D3/LuaSnip")
 	use("wesQ3/vim-windowswap")
 	use("jose-elias-alvarez/null-ls.nvim")
+	use("numToStr/Comment.nvim")
+	use("JoosepAlviste/nvim-ts-context-commentstring")
 end)
 
 vim.o.background = "light"
 
 vim.cmd([[
 set termguicolors
-	" Turn on syntax
-	syntax on
-	" Turn on filetype plugins
-	filetype plugin on
+" Turn on syntax
+syntax on
+" Turn on filetype plugins
+filetype plugin on
 
-	colorscheme antiphoton
+colorscheme antiphoton
 
-	" Set the cursor back to a vertical bar on exit
-	autocmd VimLeave * set guicursor=a:ver1-blinkon1
+" Set the cursor back to a vertical bar on exit
+autocmd VimLeave * set guicursor=a:ver1-blinkon1
 
-	" Try to autoload files that have changed on the file system
-	autocmd BufEnter,FocusGained * checktime
+" Try to autoload files that have changed on the file system
+autocmd BufEnter,FocusGained * checktime
 
-	" FixWhitespace function taken from bronson/vim-trailing-whitespace
-	function! s:FixWhitespace(line1,line2)
-		let l:save_cursor = getpos(".")
-		silent! execute ':' . a:line1 . ',' . a:line2 . 's/\\\@<!\s\+$//'
-		call setpos('.', l:save_cursor)
-	endfunction
+" FixWhitespace function taken from bronson/vim-trailing-whitespace
+function! s:FixWhitespace(line1,line2)
+let l:save_cursor = getpos(".")
+silent! execute ':' . a:line1 . ',' . a:line2 . 's/\\\@<!\s\+$//'
+call setpos('.', l:save_cursor)
+endfunction
 
-	" Run :FixWhitespace to remove end of line white space
-	command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
+" Run :FixWhitespace to remove end of line white space
+command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 
-	" Fix whitespace on save
-	au BufWritePre * :FixWhitespace
+" Fix whitespace on save
+au BufWritePre * :FixWhitespace
 ]])
 
 vim.opt.updatetime = 100
@@ -103,6 +104,14 @@ require("nvim-treesitter.configs").setup({
 	highlight = {
 		enable = true,
 	},
+	context_commentstring = {
+		enable = true,
+	},
+})
+
+require("Comment").setup({
+	sticky = false,
+	pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 })
 
 local opts = { noremap = true, silent = true }
@@ -127,14 +136,8 @@ vim.cmd([[
 cnoreabbrev gh GBrowse
 ]])
 
-vim.cmd([[
-map <C-_> <leader>c<space>
-map <C-\> <leader>c<space>
-]])
-vim.g.NERDSpaceDelims = 1
-vim.g.NERDDefaultAlign = "left"
-vim.g.NERDCommentEmptyLines = 1
-vim.g.NERDTrimTrailingWhitespace = 1
+vim.keymap.set("n", "<C-\\>", '<Plug>(comment_toggle_linewise_current)')
+vim.keymap.set("v", "<C-\\>", '<Plug>(comment_toggle_linewise_visual)')
 
 vim.api.nvim_set_keymap("n", "<C-p>", "<cmd>Telescope find_files<cr>", opts)
 vim.api.nvim_set_keymap("n", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
@@ -152,18 +155,19 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gtD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gtd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gtr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 	if client.server_capabilities.document_highlight then
 		vim.cmd([[
-		  hi! LspReferenceRead cterm=underline gui=underline
-		  hi! LspReferenceText cterm=underline gui=underline
-		  hi! LspReferenceWrite cterm=underline gui=underline
-		  augroup lsp_document_highlight
-			autocmd! * <buffer>
-			autocmd! CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-			autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-		  augroup END
+		hi! LspReferenceRead cterm=underline gui=underline
+		hi! LspReferenceText cterm=underline gui=underline
+		hi! LspReferenceWrite cterm=underline gui=underline
+		augroup lsp_document_highlight
+		autocmd! * <buffer>
+		autocmd! CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+		autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+		augroup END
 		]])
 	end
 end
@@ -188,48 +192,65 @@ local handlers = {
 	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
 }
 
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = {
-	"eslint",
-	"tsserver",
-}
-for _, lsp in pairs(servers) do
-	require("lspconfig")[lsp].setup({
-		on_attach = on_attach,
-		handlers = handlers,
-	})
-end
+local lspc = require("lspconfig")
+lspc.eslint.setup({
+	on_attach = on_attach,
+	handlers = handlers,
+	root_dir = lspc.util.root_pattern("package.json"),
+})
+lspc.tsserver.setup({
+	on_attach = on_attach,
+	handlers = handlers,
+	root_dir = lspc.util.root_pattern("tsconfig.json"),
+})
+lspc.denols.setup({
+	on_attach = on_attach,
+	handlers = handlers,
+	root_dir = lspc.util.root_pattern("deno.json"),
+})
 
--- local runtime_path = vim.split(package.path, ";")
--- table.insert(runtime_path, "lua/?.lua")
--- table.insert(runtime_path, "lua/?/init.lua")
-
--- require("lspconfig").sumneko_lua.setup({
---     settings = {
---         Lua = {
---             single_file_support = true,
---             runtime = {
--- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
--- version = "LuaJIT",
--- Setup your lua path
--- path = runtime_path,
--- },
--- diagnostics = {
--- Get the language server to recognize the `vim` global
--- globals = { "vim" },
--- },
--- workspace = {
--- Make the server aware of Neovim runtime files
--- library = vim.api.nvim_get_runtime_file("", true),
--- },
--- Do not send telemetry data containing a randomized but unique identifier
---             telemetry = {
---                 enable = false,
---             },
---         },
---     },
--- })
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local null_ls = require("null-ls")
+null_ls.setup({
+	sources = {
+		null_ls.builtins.formatting.deno_fmt.with({
+			condition = function(utils)
+				return utils.root_has_file({ "deno.json" })
+			end,
+		}),
+		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.eslint_d.with({
+			condition = function(utils)
+				return not utils.root_has_file({ "deno.json" })
+			end,
+		}),
+		null_ls.builtins.formatting.prettier.with({
+			condition = function(utils)
+				return not utils.root_has_file({ "deno.json" })
+			end,
+		}),
+		null_ls.builtins.formatting.rustfmt,
+		null_ls.builtins.formatting.crystal_format,
+	},
+	on_attach = function(client, bufnr)
+		if client.supports_method("textDocument/formatting") then
+			vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = augroup,
+				buffer = bufnr,
+				callback = function()
+					vim.lsp.buf.format({
+						bufnr = bufnr,
+						filter = function(client)
+							-- Prefer deno_fmt over denols
+							return client.name ~= "denols"
+						end,
+					})
+				end,
+			})
+		end
+	end,
+})
 
 require("telescope").load_extension("fzf")
 local actions = require("telescope.actions")
@@ -243,34 +264,9 @@ require("telescope").setup({
 	},
 })
 
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-local null_ls = require("null-ls")
-null_ls.setup({
-	sources = {
-		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.formatting.eslint_d,
-		null_ls.builtins.formatting.prettier,
-		null_ls.builtins.formatting.rustfmt,
-		null_ls.builtins.formatting.crystal_format,
-	},
-	on_attach = function(client, bufnr)
-		if client.supports_method("textDocument/formatting") then
-			vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = augroup,
-				buffer = bufnr,
-				callback = function()
-					-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-					vim.lsp.buf.formatting_seq_sync(nil, 10000)
-				end,
-			})
-		end
-	end,
-})
-
 -- Unless you are still migrating, remove the deprecated commands from v1.x
 vim.cmd([[
-	let g:neo_tree_remove_legacy_commands = 1
+let g:neo_tree_remove_legacy_commands = 1
 ]])
 
 require("neo-tree").setup({
@@ -418,41 +414,41 @@ set statusline+=%{&readonly?\"\ [Read\ Only]\":\"\"}
 set statusline+=%=
 set statusline+=%{FugitiveHead()}
 
-hi TabLineFill guifg=None guibg=None
+hi TabLineFill guifg=White guibg=White
 hi TabLine guifg=DarkGrey guibg=None
 hi TabLineSel guifg=Default guibg=None
 
 set fillchars+=vert:\ 
 
 function! Tabline()
-	let s = ''
-	for i in range(tabpagenr('$'))
-		let tab = i + 1
-		let winnr = tabpagewinnr(tab)
-		let buflist = tabpagebuflist(tab)
-		let bufnr = buflist[winnr - 1]
-		let bufname = bufname(bufnr)
-		let bufmodified = getbufvar(bufnr, "&mod")
+let s = ''
+for i in range(tabpagenr('$'))
+	let tab = i + 1
+	let winnr = tabpagewinnr(tab)
+	let buflist = tabpagebuflist(tab)
+	let bufnr = buflist[winnr - 1]
+	let bufname = bufname(bufnr)
+	let bufmodified = getbufvar(bufnr, "&mod")
 
-		let s .= '%' . tab . 'T'
-		let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-		let s .= (bufname != '' ? '[ ' . tab .': ' . fnamemodify(bufname, ':t') : '[ ' . tab .': No Name')
+	let s .= '%' . tab . 'T'
+	let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+	let s .= (bufname != '' ? '[ ' . tab .': ' . fnamemodify(bufname, ':t') : '[ ' . tab .': No Name')
 
-		if bufmodified
-			let s .= ' + ]'
-		else
-			let s .= ' ]'
+	if bufmodified
+		let s .= ' + ]'
+	else
+		let s .= ' ]'
 		endif
-	endfor
+		endfor
 
-	let s .= '%#TabLineFill#'
-	if (exists("g:tablineclosebutton"))
-		let s .= '%=%999XX'
-	endif
-	return s
-endfunction
-set tabline=%!Tabline()
-]])
+		let s .= '%#TabLineFill#'
+		if (exists("g:tablineclosebutton"))
+			let s .= '%=%999XX'
+			endif
+			return s
+			endfunction
+			set tabline=%!Tabline()
+			]])
 
 vim.opt.hidden = true
 vim.opt.backup = false

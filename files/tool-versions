@@ -3,3 +3,4 @@ crystal 1.5.1
 ruby 2.7.2
 wren-cli 0.3.0
 zig 0.9.1
+deno 1.27.0

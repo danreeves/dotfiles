@@ -34,5 +34,7 @@
 	recent = branch --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
 [init]
 	defaultBranch = main
-[url "https://github.com/"]
-	insteadOf = git://github.com/
+; [url "https://github.com/"]
+;     insteadOf = git://github.com/
+[url "git@github.com:"]
+    insteadOf = "https://github.com/"
