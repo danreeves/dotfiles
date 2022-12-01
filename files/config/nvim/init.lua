@@ -33,6 +33,7 @@ require("packer").startup(function()
 	use("jose-elias-alvarez/null-ls.nvim")
 	use("numToStr/Comment.nvim")
 	use("JoosepAlviste/nvim-ts-context-commentstring")
+	use("j-hui/fidget.nvim")
 end)
 
 vim.o.background = "light"
@@ -97,6 +98,9 @@ vim.opt.wildmode = { "longest", "list", "full" }
 vim.opt.cursorline = false
 vim.opt.mouse = "a"
 
+-- lsp status widget
+require"fidget".setup{}
+
 require("nvim-treesitter.configs").setup({
 	ensure_installed = "all",
 	ignore_install = { "phpdoc" },
@@ -136,8 +140,8 @@ vim.cmd([[
 cnoreabbrev gh GBrowse
 ]])
 
-vim.keymap.set("n", "<C-\\>", '<Plug>(comment_toggle_linewise_current)')
-vim.keymap.set("v", "<C-\\>", '<Plug>(comment_toggle_linewise_visual)')
+vim.keymap.set("n", "<C-\\>", "<Plug>(comment_toggle_linewise_current)")
+vim.keymap.set("v", "<C-\\>", "<Plug>(comment_toggle_linewise_visual)")
 
 vim.api.nvim_set_keymap("n", "<C-p>", "<cmd>Telescope find_files<cr>", opts)
 vim.api.nvim_set_keymap("n", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
@@ -212,6 +216,8 @@ lspc.denols.setup({
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local null_ls = require("null-ls")
 null_ls.setup({
+	-- add deno.json to root dir file matching so i can have subfolders be deno projects in advent of code
+	root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "Makefile", ".git", "deno.json"),
 	sources = {
 		null_ls.builtins.formatting.deno_fmt.with({
 			condition = function(utils)
