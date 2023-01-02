@@ -171,3 +171,5 @@ func w () {
 # Bun
 export BUN_INSTALL="~/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+[ -s "~/.env" ] && source "~/.env"

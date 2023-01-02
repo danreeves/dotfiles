@@ -34,9 +34,19 @@ require("packer").startup(function()
 	use("numToStr/Comment.nvim")
 	use("JoosepAlviste/nvim-ts-context-commentstring")
 	use("j-hui/fidget.nvim")
+	use("Valloric/MatchTagAlways")
 end)
 
 vim.o.background = "light"
+vim.g.mta_filetypes = {
+	html = 1,
+	xhtml = 1,
+	xml = 1,
+	jinja = 1,
+	javascript = 1,
+	["javascript.jsx"] = 1,
+	typescriptreact = 1
+}
 
 vim.cmd([[
 set termguicolors
@@ -99,7 +109,7 @@ vim.opt.cursorline = false
 vim.opt.mouse = "a"
 
 -- lsp status widget
-require"fidget".setup{}
+require("fidget").setup({})
 
 require("nvim-treesitter.configs").setup({
 	ensure_installed = "all",
@@ -200,7 +210,7 @@ local lspc = require("lspconfig")
 lspc.eslint.setup({
 	on_attach = on_attach,
 	handlers = handlers,
-	root_dir = lspc.util.root_pattern("package.json"),
+	root_dir = lspc.util.root_pattern(".eslintrc"),
 })
 lspc.tsserver.setup({
 	on_attach = on_attach,
