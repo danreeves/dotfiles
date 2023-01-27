@@ -45,7 +45,7 @@ vim.g.mta_filetypes = {
 	jinja = 1,
 	javascript = 1,
 	["javascript.jsx"] = 1,
-	typescriptreact = 1
+	typescriptreact = 1,
 }
 
 vim.cmd([[
@@ -211,7 +211,7 @@ local lspc = require("lspconfig")
 lspc.eslint.setup({
 	on_attach = on_attach,
 	handlers = handlers,
-	root_dir = lspc.util.root_pattern(".eslintrc"),
+	root_dir = lspc.util.root_pattern(".eslintrc", ".eslintrc.js"),
 })
 lspc.tsserver.setup({
 	on_attach = on_attach,
@@ -238,7 +238,8 @@ null_ls.setup({
 		null_ls.builtins.formatting.stylua,
 		null_ls.builtins.formatting.eslint_d.with({
 			condition = function(utils)
-				return not utils.root_has_file({ "deno.json" })
+				local hasEslintRc = utils.root_has_file(".eslintrc") or utils.root_has_file(".eslintrc.js")
+				return not utils.root_has_file({ "deno.json" }) and hasEslintRc
 			end,
 		}),
 		null_ls.builtins.formatting.prettier.with({
