@@ -172,6 +172,7 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gtr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 	if client.server_capabilities.document_highlight then
 		vim.cmd([[
 		hi! LspReferenceRead cterm=underline gui=underline
