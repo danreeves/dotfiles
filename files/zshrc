@@ -172,4 +172,6 @@ func w () {
 export BUN_INSTALL="~/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+export NODE_OPTIONS=--max_old_space_size=12288
+
 [ -s "~/.env" ] && source "~/.env"
