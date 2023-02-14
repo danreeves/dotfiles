@@ -4,3 +4,4 @@ typescript-language-server
 vscode-langservers-extracted
 eslint_d
 trash-cli
+@fsouza/prettierd
