@@ -35,6 +35,8 @@ require("packer").startup(function()
 	use("JoosepAlviste/nvim-ts-context-commentstring")
 	use("j-hui/fidget.nvim")
 	use("Valloric/MatchTagAlways")
+	use('simrat39/rust-tools.nvim')
+	use('mfussenegger/nvim-dap')
 end)
 
 vim.o.background = "light"
@@ -228,21 +230,21 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local null_ls = require("null-ls")
 null_ls.setup({
 	-- add deno.json to root dir file matching so i can have subfolders be deno projects in advent of code
-	root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "Makefile", ".git", "deno.json"),
+	root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "Makefile", ".git", "deno.json", "package.json"),
 	sources = {
 		null_ls.builtins.formatting.deno_fmt.with({
 			condition = function(utils)
 				return utils.root_has_file({ "deno.json" })
 			end,
 		}),
-		null_ls.builtins.formatting.stylua,
+		-- null_ls.builtins.formatting.stylua,
 		null_ls.builtins.formatting.eslint_d.with({
 			condition = function(utils)
 				local hasEslintRc = utils.root_has_file(".eslintrc") or utils.root_has_file(".eslintrc.js")
 				return not utils.root_has_file({ "deno.json" }) and hasEslintRc
 			end,
 		}),
-		null_ls.builtins.formatting.prettier.with({
+		null_ls.builtins.formatting.prettierd.with({
 			condition = function(utils)
 				return not utils.root_has_file({ "deno.json" })
 			end,

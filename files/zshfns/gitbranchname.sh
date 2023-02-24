@@ -7,4 +7,4 @@ if [[ $branch != "" ]]; then
   echo " | ${branch:0:9}$dirty";
 fi
 
-tmux rename-session "${PWD##*/}"
+tmux rename-session "${$(basename "$PWD")/./ }"
