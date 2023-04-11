@@ -35,8 +35,8 @@ require("packer").startup(function()
 	use("JoosepAlviste/nvim-ts-context-commentstring")
 	use("j-hui/fidget.nvim")
 	use("Valloric/MatchTagAlways")
-	use('simrat39/rust-tools.nvim')
-	use('mfussenegger/nvim-dap')
+	use("simrat39/rust-tools.nvim")
+	use("mfussenegger/nvim-dap")
 end)
 
 vim.o.background = "light"
@@ -211,7 +211,13 @@ local handlers = {
 
 local lspc = require("lspconfig")
 lspc.eslint.setup({
-	on_attach = on_attach,
+	on_attach = function(client, bufnr)
+		on_attach(client, bufnr)
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			buffer = bufnr,
+			command = "EslintFixAll",
+		})
+	end,
 	handlers = handlers,
 	root_dir = lspc.util.root_pattern(".eslintrc", ".eslintrc.js"),
 })
@@ -237,13 +243,19 @@ null_ls.setup({
 				return utils.root_has_file({ "deno.json" })
 			end,
 		}),
-		-- null_ls.builtins.formatting.stylua,
-		null_ls.builtins.formatting.eslint_d.with({
-			condition = function(utils)
-				local hasEslintRc = utils.root_has_file(".eslintrc") or utils.root_has_file(".eslintrc.js")
-				return not utils.root_has_file({ "deno.json" }) and hasEslintRc
-			end,
-		}),
+		null_ls.builtins.formatting.stylua,
+		-- null_ls.builtins.diagnostics.eslint.with({
+		-- 	condition = function(utils)
+		-- 		local hasEslintRc = utils.root_has_file(".eslintrc") or utils.root_has_file(".eslintrc.js")
+		-- 		return not utils.root_has_file({ "deno.json" }) and hasEslintRc
+		-- 	end,
+		-- }),
+		-- null_ls.builtins.formatting.eslint.with({
+		-- 	condition = function(utils)
+		-- 		local hasEslintRc = utils.root_has_file(".eslintrc") or utils.root_has_file(".eslintrc.js")
+		-- 		return not utils.root_has_file({ "deno.json" }) and hasEslintRc
+		-- 	end,
+		-- }),
 		null_ls.builtins.formatting.prettierd.with({
 			condition = function(utils)
 				return not utils.root_has_file({ "deno.json" })
@@ -281,6 +293,8 @@ require("telescope").setup({
 				["<esc>"] = actions.close,
 			},
 		},
+		layout_strategy = "vertical",
+		layout_config = { height = 0.95 },
 	},
 })
 
