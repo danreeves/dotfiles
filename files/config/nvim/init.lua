@@ -28,7 +28,7 @@ require("packer").startup(function()
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-cmdline")
 	use("hrsh7th/nvim-cmp")
-	use("L3MON4D3/LuaSnip")
+	-- use("L3MON4D3/LuaSnip")
 	use("wesQ3/vim-windowswap")
 	use("jose-elias-alvarez/null-ls.nvim")
 	use("numToStr/Comment.nvim")
@@ -232,6 +232,8 @@ lspc.denols.setup({
 	root_dir = lspc.util.root_pattern("deno.json"),
 })
 
+require("rust-tools").setup()
+
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local null_ls = require("null-ls")
 null_ls.setup({
@@ -256,6 +258,13 @@ null_ls.setup({
 		-- 		return not utils.root_has_file({ "deno.json" }) and hasEslintRc
 		-- 	end,
 		-- }),
+		null_ls.builtins.diagnostics.selene,
+		null_ls.builtins.formatting.eslint_d.with({
+			condition = function(utils)
+				local hasEslintRc = utils.root_has_file(".eslintrc") or utils.root_has_file(".eslintrc.js")
+				return not utils.root_has_file({ "deno.json" }) and hasEslintRc
+			end,
+		}),
 		null_ls.builtins.formatting.prettierd.with({
 			condition = function(utils)
 				return not utils.root_has_file({ "deno.json" })

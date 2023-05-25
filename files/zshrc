@@ -23,6 +23,9 @@ fi
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && \
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && \
+	export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+
 ### source asdf vm manager
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 [ -f $(brew --prefix asdf)/libexec/asdf.sh ] && source $(brew --prefix asdf)/libexec/asdf.sh
