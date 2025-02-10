@@ -3,7 +3,7 @@
 	email = hey@danreev.es
 
 [core]
-	excludesfile = /Users/dan.reeves/.gitignore_global
+	excludesFile = ~/.gitignore_global
 
 [tag]
 	sort = version:refname
@@ -40,3 +40,6 @@
     insteadOf = "https://github.com/"
 [pull]
 	ff = only
+[gitbutler]
+	signCommits = false
+	aiModelProvider = openai
