@@ -1,0 +1,4 @@
+theme = GitHub-Light-Default
+font-size = 18
+fullscreen = true
+font-feature = -calt, -liga, -dlig

@@ -111,7 +111,7 @@ alias disk-use='ncdu --color dark -rr -x --exclude .git --exclude node_modules'
 export BUN_INSTALL="~/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# export NODE_OPTIONS=--max_old_space_size=12288
+export NODE_OPTIONS=--max_old_space_size=12288
 
 [ -f ~/.env ] && source ~/.env
 

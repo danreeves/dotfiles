@@ -1,0 +1,9 @@
+theme = "github_light"
+
+[editor]
+true-color = true
+lsp.display-inlay-hints = true
+cursorline = true
+
+[editor.inline-diagnostics]
+cursor-line = "hint"
