@@ -43,3 +43,5 @@
 [gitbutler]
 	signCommits = false
 	aiModelProvider = openai
+[pager]
+	diff = false

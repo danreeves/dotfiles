@@ -1,3 +1,6 @@
 # npm i -g managed by asdf
 
 nx
+corepack
+yarn
+@anthropic-ai/claude-code

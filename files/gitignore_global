@@ -26,3 +26,5 @@ __pycache__
 
 ## asdf
 .tool-versions
+
+.vscode/mcp.json

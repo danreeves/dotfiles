@@ -1,8 +1,6 @@
-# Set up the prompt``
-PS1=' ; '
-
-# Colours please
-export TERM=xterm-256color
+# Set up the prompt
+PS1=" %~
+ ; "
 
 # set key repeat for debian
 if (( $+xset )) ; then
@@ -40,9 +38,6 @@ SAVEHIST=$HISTSIZE
 setopt APPEND_HISTORY
 alias history="history 1"
 
-### better tab completion
-autoload -U compinit
-compinit
 # case insensitive
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
@@ -57,36 +52,26 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 ### some aliases
 alias cl='clear'
 alias ls='ls -GFh'
-alias diff='git diff --no-index'
 
-alias vim="nvim"
-alias vi="nvim"
 export EDITOR="code"
 export REACT_EDITOR="code"
 
-# v [path]
-# Opens the passed path or the current dir in vi
-function v () {
-    # if there's no argument
-    if [ $# -eq 0 ]; then
-        vi ./
-        return
-    fi
-    vi $@
-}
-
 ### jump to recently used items
-eval "$(fasd --init zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
-function fasd_cd() {
-  if [ $# -le 1 ]; then
-    fasd "$@"
-  else
-    local _fasd_ret="$(fasd -e 'printf %s' "$@")"
-    [ -z "$_fasd_ret" ] && return
-    [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
-  fi
-}
-alias z='fasd_cd -d' # cd, same functionality as j in autojump
+if command -v fasd >/dev/null 2>&1 ; then
+  eval "$(fasd --init zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+  function fasd_cd() {
+    if [ $# -le 1 ]; then
+      fasd "$@"
+    else
+      local _fasd_ret="$(fasd -e 'printf %s' "$@")"
+      [ -z "$_fasd_ret" ] && return
+      [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
+    fi
+  }
+  alias z='fasd_cd -d' # cd, same functionality as j in autojump
+else
+  echo "[warn] fasd not installed; skipping jump aliases."
+fi
 
 function trash() {
   echo "[x] moving files to trash..."
@@ -97,22 +82,19 @@ function trash() {
 alias gaa='git add -A'
 alias gs='git status'
 alias gcm='git commit -m'
+alias gsw='git switch'
+alias gsy='git town sync'
+
 
 # fzf fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS='--color=bw'
 
-alias disk-use='ncdu --color dark -rr -x --exclude .git --exclude node_modules'
+alias disk-use='ncdu -rr -x --exclude .git --exclude node_modules'
 
-# bun completions
-[ -f ~/.bun/_bun ] && source ~/.bun/_bun
-
-# Bun
-export BUN_INSTALL="~/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-export NODE_OPTIONS=--max_old_space_size=12288
+export NODE_OPTIONS=--max-old-space-size=12288
 
 [ -f ~/.env ] && source ~/.env
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+autoload -U compinit; compinit
