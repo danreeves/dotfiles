@@ -1,2 +1,6 @@
-md %APPDATA%\alacritty 2>nul
-mklink %APPDATA%\alacritty\alacritty.yml %cd%\files\config\alacritty\alacritty_windows.yml 
+mkdir "%USERPROFILE%\.config\mise"
+mklink "%USERPROFILE%\.config\mise\config.toml" "%CD%\files\config\mise\config.toml"
+mklink "%USERPROFILE%\.gitconfig" "%CD%\files\gitconfig"
+mklink "%USERPROFILE%\.gitignore_global" "%CD%\files\gitignore_global"
+mkdir "%USERPROFILE%\Documents\PowerShell"
+mklink "%USERPROFILE%\Documents\PowerShell\profile.ps1" "%CD%\files\powershell\profile.ps1"

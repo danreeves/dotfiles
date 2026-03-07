@@ -1,0 +1,19 @@
+# .mise.toml migrated from asdf tool-versions
+[tools]
+nodejs = "24.4.1"
+crystal = "1.10.1"
+ruby = "3.2.2"
+wren-cli = "0.3.0"
+zig = "0.9.1"
+deno = "2.3.5"
+rust = "1.86.0"
+bun = "1.3.5"
+
+[settings]
+# tools can read the versions files used by other version managers
+# for example, .nvmrc in the case of node's nvm
+idiomatic_version_file_enable_tools = ['node']
+
+# configure `mise install` to always keep the downloaded archive
+always_keep_download = false        # deleted after install by default
+always_keep_install = false         # deleted on failure by default
