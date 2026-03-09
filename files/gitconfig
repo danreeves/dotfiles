@@ -33,7 +33,12 @@
 
 [alias]
 	recent = branch --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
-
+	append = town append
+	hack = town hack
+	delete = town delete
+	rename = town rename
+	set-parent = town set-parent
+	sync = town sync
 [init]
 	defaultBranch = main
 
