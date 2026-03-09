@@ -2,6 +2,8 @@
 PS1=" %~
  ; "
 
+eval "$(mise activate zsh)"
+
 # set key repeat for debian
 if (( $+xset )) ; then
   xset r rate 180 40
@@ -96,5 +98,4 @@ export NODE_OPTIONS=--max-old-space-size=12288
 
 [ -f ~/.env ] && source ~/.env
 
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 autoload -U compinit; compinit
