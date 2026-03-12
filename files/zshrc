@@ -2,7 +2,6 @@
 PS1=" %~
  ; "
 
-eval "$(mise activate zsh)"
 
 # set key repeat for debian
 if (( $+xset )) ; then
@@ -26,11 +25,8 @@ export PATH="/usr/bin:$PATH"
 ### Homebrew path 🍺
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-### Rust path 🦀
-export PATH="$HOME/.cargo/bin:$PATH"
-### Go path
-export PATH="/opt/go/bin:$PATH"
-export GOPATH="$HOME/go"
+
+eval "$(mise activate zsh)"
 
 ### history file config
 HISTFILE=~/.zsh_history
@@ -86,7 +82,6 @@ alias gs='git status'
 alias gcm='git commit -m'
 alias gsw='git switch'
 alias gsy='git town sync'
-
 
 # fzf fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
